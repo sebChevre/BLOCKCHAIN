@@ -1,0 +1,3 @@
+ch\sebooom\blockchain\domain\Block.class
+ch\sebooom\blockchain\domain\util\StringUtil.class
+ch\sebooom\blockchain\domain\BlockChain.class
