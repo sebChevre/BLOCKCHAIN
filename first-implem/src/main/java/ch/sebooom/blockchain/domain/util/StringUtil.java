@@ -1,6 +1,7 @@
 package ch.sebooom.blockchain.domain.util;
 
-import java.security.MessageDigest;
+import java.security.*;
+import java.util.Base64;
 
 public class StringUtil {
 
@@ -28,6 +29,39 @@ public class StringUtil {
         catch(Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //Applies ECDSA Signature and returns the result ( as bytes ).
+    public static byte[] applyECDSASig(PrivateKey clePrive, String input) {
+        Signature dsa;
+        byte[] output = new byte[0];
+        try {
+            dsa = Signature.getInstance("ECDSA", "BC");
+            dsa.initSign(clePrive);
+            byte[] strByte = input.getBytes();
+            dsa.update(strByte);
+            byte[] realSig = dsa.sign();
+            output = realSig;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return output;
+    }
+
+    //Verifies a String signature
+    public static boolean verifyECDSASig(PublicKey clePublique, String data, byte[] signature) {
+        try {
+            Signature ecdsaVerify = Signature.getInstance("ECDSA", "BC");
+            ecdsaVerify.initVerify(clePublique);
+            ecdsaVerify.update(data.getBytes());
+            return ecdsaVerify.verify(signature);
+        }catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getStringFromKey(Key cle) {
+        return Base64.getEncoder().encodeToString(cle.getEncoded());
     }
 
 }
