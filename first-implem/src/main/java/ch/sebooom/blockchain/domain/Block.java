@@ -32,6 +32,7 @@ public class Block {
         String hashCalcule = StringUtil.applySha256(
                 previousHash +
                         timeStamp +
+                        Integer.toString(nonce) +
                         data
         );
         return hashCalcule;

@@ -60,7 +60,7 @@ public class BlockChain {
 
 
     public boolean mineLastBlock () {
-        Iterables.getLast(blockChain).mineBlock(0);
+        Iterables.getLast(blockChain).mineBlock(5);
 
         return true;
     }
