@@ -43,7 +43,7 @@ public class BlockChainTest {
 
         String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
         System.out.println(blockchainJson);
-        System.out.println("Validaty: " + blockchain.isChainValid());
+        System.out.println("Validity: " + blockchain.isChainValid());
         assertFalse(blockchain.isChainValid());
     }
 }
