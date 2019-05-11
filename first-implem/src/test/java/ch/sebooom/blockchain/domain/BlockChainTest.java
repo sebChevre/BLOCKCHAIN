@@ -2,12 +2,16 @@ package ch.sebooom.blockchain.domain;
 
 import com.google.gson.GsonBuilder;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
 public class BlockChainTest {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(BlockChainTest.class.getName());
 
     @Test
     public void testBlockChainBasic () {
@@ -23,8 +27,8 @@ public class BlockChainTest {
         blockchain.mineLastBlock();
 
         String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-        System.out.println(blockchainJson);
-        System.out.println("Validaty: " + blockchain.isChainValid());
+        LOGGER.info(blockchainJson);
+        LOGGER.info("Validaty: " + blockchain.isChainValid());
         assertTrue(blockchain.isChainValid());
     }
 
@@ -42,8 +46,8 @@ public class BlockChainTest {
         blockchain.mineLastBlock();
 
         String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-        System.out.println(blockchainJson);
-        System.out.println("Validity: " + blockchain.isChainValid());
+        LOGGER.info(blockchainJson);
+        LOGGER.info("Validity: " + blockchain.isChainValid());
         assertFalse(blockchain.isChainValid());
     }
 }

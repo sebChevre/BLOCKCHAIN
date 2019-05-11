@@ -1,6 +1,8 @@
 package ch.sebooom.blockchain.domain;
 
 import com.google.common.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
  * La chain ede blocs
  */
 public class BlockChain {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(BlockChain.class.getName());
 
     public  List<Block> blockChain = new ArrayList<>();
 
@@ -35,10 +39,9 @@ public class BlockChain {
      * @return un booléen indiquant le status de validité de la chaine
      */
     public  Boolean isChainValid() {
+
         Block currentBlock;
         Block previousBlock;
-
-
 
         //loop through blockchain to check hashes:
         for(int i=1; i < blockChain.size(); i++) {
@@ -46,12 +49,12 @@ public class BlockChain {
             previousBlock = blockChain.get(i-1);
             //compare registered hash and calculated hash:
             if(!currentBlock.hash.equals(currentBlock.calculeHashSignature()) ){
-                System.out.println("Current Hashes not equal");
+                LOGGER.debug("Current Hashes not equal");
                 return false;
             }
             //compare previous hash and registered previous hash
             if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
-                System.out.println("Previous Hashes not equal");
+                LOGGER.debug("Previous Hashes not equal");
                 return false;
             }
         }
@@ -60,6 +63,7 @@ public class BlockChain {
 
 
     public boolean mineLastBlock () {
+
         Iterables.getLast(blockChain).mineBlock();
 
         return true;

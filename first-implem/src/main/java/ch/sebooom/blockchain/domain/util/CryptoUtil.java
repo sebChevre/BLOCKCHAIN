@@ -2,7 +2,7 @@ package ch.sebooom.blockchain.domain.util;
 
 import java.security.MessageDigest;
 
-public class StringUtil {
+public class CryptoUtil {
 
     //Applies Sha256 to a string and returns the result.
 

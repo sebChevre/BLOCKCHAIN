@@ -4,14 +4,14 @@ package ch.sebooom.blockchain.domain.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class StringUtilTest {
+public class CryptoUtilTest {
 
     @Test
     public void testEncrypt () {
 
         String maChaine = "Hello Seb";
 
-        String maChaineEncrypt = StringUtil.applySha256(maChaine);
+        String maChaineEncrypt = CryptoUtil.applySha256(maChaine);
 
         System.out.println(maChaineEncrypt);
         Assert.assertFalse(maChaineEncrypt.isEmpty());

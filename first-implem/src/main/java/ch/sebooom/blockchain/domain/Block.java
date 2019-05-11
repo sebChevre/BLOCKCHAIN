@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.domain;
 
-import ch.sebooom.blockchain.domain.util.StringUtil;
+import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +34,18 @@ public class Block {
     }
 
     public String calculeHashSignature () {
+        LOGGER.trace("Starting calculate block hash");
+        Long start = new Date().getTime();
 
-        String hashCalcule = StringUtil.applySha256(
+        String hashCalcule = CryptoUtil.applySha256(
                 previousHash +
                         timeStamp +
                         Integer.toString(nonce) +
                         data
         );
+
+        LOGGER.trace("Hash block calculated");
+
         return hashCalcule;
     }
 
@@ -48,12 +53,14 @@ public class Block {
     public void mineBlock() {
         LOGGER.trace("Starting block mining..., hash : " + hash);
         Long start = new Date().getTime();
+
         String target = new String(new char[MINING_DIFFICULTY]).replace('\0', '0'); //Create a string with difficulty * "0"
 
         while(!hash.substring( 0, MINING_DIFFICULTY).equals(target)) {
             nonce ++;
             hash = calculeHashSignature();
         }
+
         LOGGER.trace("Block Mined in: " + (new Date().getTime() - start) +"ms, hash" + hash);
     }
 
