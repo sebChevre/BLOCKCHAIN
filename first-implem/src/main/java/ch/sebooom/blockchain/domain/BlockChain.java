@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 /**
  * La chain ede blocs
@@ -19,19 +22,24 @@ public class BlockChain {
     /**
      * Ajout d'un block à la chaine
      * @param block
-     * @return
+     * @return un boolean spécifiant si l'ajout au bloc s'est bien passé
      */
     public boolean addBlock(Block block){
+        Objects.requireNonNull(block,"The block can't be null");
         blockChain.add(block);
         return true;
     }
 
+    public Block getLastBlock () {
+        return Iterables.getLast(blockChain);
+    }
     /**
      * Retourne le hash du dernier block de la chaine
      * @return
      */
     public String getLastHash(){
-        return Iterables.getLast(blockChain).hash;
+
+        return getLastBlock().hash;
     }
 
     /**
@@ -40,34 +48,39 @@ public class BlockChain {
      */
     public  Boolean isChainValid() {
 
-        Block currentBlock;
-        Block previousBlock;
+        //reduce dés qu'un élément est trouvé (id d'un bloc non integre
+        OptionalInt blocNonIntegre = IntStream
+                .range(1,blockChain.size())
+                .filter(idxBlockCourant -> {
+                    Block blocCourant = blockChain.get(idxBlockCourant);
+                    Block blocPrecedent = blockChain.get(idxBlockCourant-1);
 
-        //loop through blockchain to check hashes:
-        for(int i=1; i < blockChain.size(); i++) {
-            currentBlock = blockChain.get(i);
-            previousBlock = blockChain.get(i-1);
-            //compare registered hash and calculated hash:
-            if(!currentBlock.hash.equals(currentBlock.calculeHashSignature()) ){
-                LOGGER.debug("Current Hashes not equal");
-                return false;
-            }
-            //compare previous hash and registered previous hash
-            if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
-                LOGGER.debug("Previous Hashes not equal");
-                return false;
-            }
+                    return !isBlockIntegre(blocCourant,blocPrecedent);
+                }).findFirst();
+
+                return !blocNonIntegre.isPresent();
+
+    }
+
+    private boolean isBlockIntegre(Block blocCourant, Block blocPrecedent) {
+
+        //comparaison du hash stocké et du hash calculer
+        if(!blocCourant.isBlockIntegre()){
+            LOGGER.warn("Hash courant non égal");
+            return false;
         }
+
+        //compate le lien entre les blocs courant et précédent
+        if(!blocPrecedent.hash.equals(blocCourant.hashPrecedent)){
+            LOGGER.warn("Hash précédent no égal");
+            return false;
+        }
+
         return true;
     }
 
 
-    public boolean mineLastBlock () {
 
-        Iterables.getLast(blockChain).mineBlock();
-
-        return true;
-    }
 }
 
 
