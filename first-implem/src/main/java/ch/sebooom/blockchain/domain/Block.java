@@ -8,7 +8,7 @@ import java.util.Date;
  * Représente un block de la chaine
  */
 public class Block {
-
+    private static final int MINING_DIFFICULTY = 5;
     public String hash; //le hash du bloc, la signature
     public String previousHash; //le hash du bloc précédent
     private String data; //données initiale un message
@@ -39,11 +39,11 @@ public class Block {
     }
 
 
-    public void mineBlock(int difficulty) {
+    public void mineBlock() {
 
-        String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0"
+        String target = new String(new char[MINING_DIFFICULTY]).replace('\0', '0'); //Create a string with difficulty * "0"
 
-        while(!hash.substring( 0, difficulty).equals(target)) {
+        while(!hash.substring( 0, MINING_DIFFICULTY).equals(target)) {
             nonce ++;
             hash = calculeHashSignature();
         }

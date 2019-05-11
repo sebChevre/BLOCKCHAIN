@@ -18,7 +18,7 @@ public class BlockTest {
 
         }
 
-        Block block2 = new Block("test","123456dff");
+        Block block2 = new Block("test","023456dff");
 
         String hash = block.hash;
         String hash2 = block2.hash;
