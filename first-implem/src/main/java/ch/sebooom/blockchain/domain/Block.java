@@ -4,7 +4,9 @@ import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -19,20 +21,20 @@ public class Block {
     private static final String GENESIS_HASH_PRECEDENT = "0";
     public String hash; //le hash du bloc, la signature
     public String hashPrecedent; //le hash du bloc précédent
-    private String data; //données initiale un message
     private long timeStamp; //timestamp de creation
     private int nonce;
+    public String merkleRoot;
+    public List<Transaction> transactions = new ArrayList<>(); //our data will be a simple message.
 
     /**
-     * Constructuer d'un block
-     * @param data les donnée sd ublock
+     * Constructeur d'un block
      * @param hashPrecedent le hash du block précédent
      */
-    public Block(String data,String hashPrecedent) {
-        Objects.requireNonNull(data,"Data can't be null");
+    public Block(String hashPrecedent) {
+
         checkHashPrecedent(hashPrecedent);
 
-        this.data = data;
+
         this.hashPrecedent = hashPrecedent;
         this.timeStamp = new Date().getTime();
         this.hash = calculeHashSignature();
@@ -64,7 +66,7 @@ public class Block {
                 hashPrecedent +
                         timeStamp +
                         Integer.toString(nonce) +
-                        data
+                        merkleRoot
         );
 
         LOGGER.trace("Hash block calculated");
@@ -87,6 +89,8 @@ public class Block {
      */
     public void mine(int difficulty){
         LOGGER.trace("Starting block mining..., hash : " + hash);
+        merkleRoot = CryptoUtil.getMerkleRoot(transactions);
+
         Long start = new Date().getTime();
 
         String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0"
@@ -97,6 +101,21 @@ public class Block {
         }
 
         LOGGER.trace("Block Mined in: " + (new Date().getTime() - start) +"ms, hash" + hash);
+    }
+
+    //Add transactions to this block
+    public boolean addTransaction(Transaction transaction) {
+        //process transaction and check if valid, unless block is genesis block then ignore.
+        if(transaction == null) return false;
+        if((hashPrecedent != "0")) {
+            if((transaction.processTransaction() != true)) {
+                System.out.println("Transaction failed to process. Discarded.");
+                return false;
+            }
+        }
+        transactions.add(transaction);
+        System.out.println("Transaction Successfully added to Block");
+        return true;
     }
 
 

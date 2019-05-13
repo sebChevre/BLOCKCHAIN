@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.domain;
 
-import ch.sebooom.blockchain.domain.util.StringUtil;
+import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.junit.Test;
 
 import java.security.Security;
@@ -18,11 +18,11 @@ public class PorteFeuilleTest {
        PorteFeuille ptf1 = new PorteFeuille();
        PorteFeuille ptf2 = new PorteFeuille();
 
-        System.out.println("Key pair - Private : " + StringUtil.getStringFromKey(ptf1.clePrive) +
-                ", publique: " + StringUtil.getStringFromKey(ptf1.clePublique));
+        System.out.println("Key pair - Private : " + CryptoUtil.getStringFromKey(ptf1.clePrive) +
+                ", publique: " + CryptoUtil.getStringFromKey(ptf1.clePublique));
 
-        assertFalse(StringUtil.getStringFromKey(ptf1.clePrive).isEmpty());
-        assertFalse(StringUtil.getStringFromKey(ptf1.clePublique).isEmpty());
+        assertFalse(CryptoUtil.getStringFromKey(ptf1.clePrive).isEmpty());
+        assertFalse(CryptoUtil.getStringFromKey(ptf1.clePublique).isEmpty());
 
        Transaction t = new Transaction(ptf1.clePublique, ptf2.clePublique,5, null);
        t.generateSignature(ptf1.clePrive);

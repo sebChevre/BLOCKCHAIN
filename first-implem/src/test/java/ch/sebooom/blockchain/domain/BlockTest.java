@@ -19,12 +19,12 @@ public class BlockTest {
     public void givenBlockInstanticationWithNullValuesThenExceptionMusstBeThrown () {
 
         Throwable nullDataException = catchThrowable(() -> {
-            Block b = new Block(null,"");
+            Block b = new Block("");
         });
         assertThat(nullDataException).isInstanceOf(NullPointerException.class);
 
         Throwable nullHashException = catchThrowable(() -> {
-            Block b = new Block("",null);
+            Block b = new Block(null);
         });
         assertThat(nullHashException).isInstanceOf(NullPointerException.class);
 
@@ -33,14 +33,14 @@ public class BlockTest {
     @Test
     public void givenTwoBlockThenHashMustBeDifferent () {
 
-        Block block = new Block("test", CryptoUtil.sha256Hash("123"));
+        Block block = new Block(CryptoUtil.sha256Hash("123"));
 
         //simuler un timestamp différent
         try{
             Thread.sleep(100);
         }catch (Exception e){ }
 
-        Block block2 = new Block("test",CryptoUtil.sha256Hash("234"));
+        Block block2 = new Block(CryptoUtil.sha256Hash("234"));
 
         String hash = block.hash;
         String hash2 = block2.hash;
@@ -55,20 +55,20 @@ public class BlockTest {
     @Test
     public void givenThreeBlockWhenGenerateBlockAndHashLinkAllMustBeDone () {
 
-        Block genesisBlock = new Block("Hi im the first block", "0");
+        Block genesisBlock = new Block( "0");
         LOGGER.info("Hash for block 1 : " + genesisBlock.hash);
 
-        Block secondBlock = new Block("Yo im the second block",genesisBlock.hash);
+        Block secondBlock = new Block(genesisBlock.hash);
         LOGGER.info("Hash for block 2 : " + secondBlock.hash);
 
-        Block thirdBlock = new Block("Hey im the third block",secondBlock.hash);
+        Block thirdBlock = new Block(secondBlock.hash);
         LOGGER.info("Hash for block 3 : " + thirdBlock.hash);
     }
 
     @Test
     public void givenABlockWhenBlockIsMinedThenHashMusttBeChanged () {
 
-        Block block = new Block("b1",CryptoUtil.sha256Hash("b1"));
+        Block block = new Block(CryptoUtil.sha256Hash("b1"));
         String initialHash = block.hash;
 
         block.mine(1);
@@ -76,4 +76,6 @@ public class BlockTest {
         assertThat(initialHash).isNotEqualTo(block.hash);
 
     }
+
+
 }
