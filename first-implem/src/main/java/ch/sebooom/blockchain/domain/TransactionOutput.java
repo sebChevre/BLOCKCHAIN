@@ -1,12 +1,14 @@
 package ch.sebooom.blockchain.domain;
 
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.security.PublicKey;
 
 public class TransactionOutput {
 
     public String id;
+    @JsonIgnore
     public PublicKey destinataire; //also known as the new owner of these coins.
     public float value; //the amount of coins they own
     public String parentTransactionId; //the id of the transaction this output was created in

@@ -83,6 +83,7 @@ public class CryptoUtil {
             // Initialize the key generator and generate a KeyPair
             keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
             KeyPair keyPair = keyGen.generateKeyPair();
+            
             return keyPair;
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException  e) {

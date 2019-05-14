@@ -1,6 +1,7 @@
 package ch.sebooom.blockchain.domain;
 
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
@@ -13,10 +14,12 @@ public class Transaction {
 
     @Expose
     public String transactionId; // hash
+    @JsonIgnore
     public PublicKey expediteur; // cle publique expediteur
+    @JsonIgnore
     public PublicKey destinataire; // cle publique destinataire
     public float value;//montant de la transaction
-    private byte[] signature; // previent le fait que personne d'autre ne peut utiliser mon protefeuille
+    public byte[] signature; // previent le fait que personne d'autre ne peut utiliser mon protefeuille
     public List<TransactionInput> inputs = new ArrayList<TransactionInput>();
     public List<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
 
@@ -30,8 +33,17 @@ public class Transaction {
         this.inputs = inputs;
     }
 
+    // Constructor:
+    public Transaction(PublicKey from, PublicKey to, float value) {
+        this.expediteur = from;
+        this.destinataire = to;
+        this.value = value;
+    }
+
+
+
     // This Calculates the transaction hash (which will be used as its Id)
-    private String calulateHash() {
+    public String calulateHash() {
         sequence++; //increase the sequence to avoid 2 identical transactions having the same hash
         return CryptoUtil.sha256Hash(
                 CryptoUtil.getStringFromKey(expediteur) +
@@ -51,7 +63,7 @@ public class Transaction {
         return CryptoUtil.checkECDSASignature(expediteur, data, signature);
     }
 
-
+/**
     //Returns true if new transaction could be created.
     public boolean processTransaction() {
 
@@ -89,7 +101,7 @@ public class Transaction {
         }
 
         return true;
-    }
+    }*/
 
     //returns sum of inputs(UTXOs) values
     public float getInputsValue() {

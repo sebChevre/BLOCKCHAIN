@@ -5,21 +5,22 @@ import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class PorteFeuille {
 
     public PrivateKey clePrive;
     public PublicKey clePublique;
+    public String adresse;
 
     public Map<String,TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 
 
     public PorteFeuille(){
         genererCles();
+        this.adresse = UUID.randomUUID().toString();
     }
 
     public void genererCles() {
@@ -29,11 +30,13 @@ public class PorteFeuille {
             clePrive = keyPair.getPrivate();
             clePublique = keyPair.getPublic();
 
+
+
         }catch(Exception e) {
             throw new RuntimeException(e);
         }
     }
-
+/**
     public float getBalance() {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: BlockChain.UTXOs.entrySet()){
@@ -45,6 +48,8 @@ public class PorteFeuille {
         }
         return total;
     }
+ */
+/**
     //Generates and returns a new transaction from this wallet.
     public Transaction sendFunds(PublicKey _recipient,float value ) {
         if(getBalance() < value) { //gather balance and check funds.
@@ -70,5 +75,5 @@ public class PorteFeuille {
         }
         return newTransaction;
     }
-
+*/
 }

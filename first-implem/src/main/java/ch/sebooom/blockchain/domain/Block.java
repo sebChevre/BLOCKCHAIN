@@ -88,7 +88,7 @@ public class Block {
      * Méthode permettant de miner le bloc
      */
     public void mine(int difficulty){
-        LOGGER.trace("Starting block mining..., hash : " + hash);
+        LOGGER.trace("> Starting block mining..., hash : " + hash);
         merkleRoot = CryptoUtil.getMerkleRoot(transactions);
 
         Long start = new Date().getTime();
@@ -102,7 +102,7 @@ public class Block {
 
         LOGGER.trace("Block Mined in: " + (new Date().getTime() - start) +"ms, hash" + hash);
     }
-
+/**
     //Add transactions to this block
     public boolean addTransaction(Transaction transaction) {
         //process transaction and check if valid, unless block is genesis block then ignore.
@@ -117,6 +117,6 @@ public class Block {
         System.out.println("Transaction Successfully added to Block");
         return true;
     }
-
+*/
 
 }
