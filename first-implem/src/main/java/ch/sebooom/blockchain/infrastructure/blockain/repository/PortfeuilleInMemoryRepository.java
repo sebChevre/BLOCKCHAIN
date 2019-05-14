@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by seb on .
@@ -22,6 +23,16 @@ public class PortfeuilleInMemoryRepository implements PortefeuilleRepository {
     @Override
     public List<PorteFeuille> getAllPortefeuille() {
         return dataSource.getAllPortefeuille();
+    }
+
+    @Override
+    public Optional<PorteFeuille> getPortefeuilleByAdresse (String adresse) {
+
+        Optional<PorteFeuille> porteFeuilleOptional = dataSource.getAllPortefeuille().stream().filter(porteFeuille -> {
+            return porteFeuille.adresse.equals(adresse);
+        }).findFirst();
+
+        return porteFeuilleOptional;
     }
 
     @Override

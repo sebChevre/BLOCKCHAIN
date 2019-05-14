@@ -2,9 +2,12 @@ package ch.sebooom.blockchain.application.service.impl;
 
 import ch.sebooom.blockchain.application.service.PortefeuilleService;
 import ch.sebooom.blockchain.domain.PorteFeuille;
+import ch.sebooom.blockchain.domain.exception.PortefeuilleNonExistantException;
 import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
 import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
 import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
+import org.apache.commons.lang3.tuple.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,21 @@ public class PortefeuilleServiceImpl implements PortefeuilleService {
         });
         return portefeuilleWithBalance;
 
+    }
+
+    @Override
+    public ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse){
+
+        PorteFeuille porteFeuille = portefeuilleRepository.getPortefeuilleByAdresse(adresse).orElseThrow(() ->
+                new PortefeuilleNonExistantException(adresse)
+        );
+
+        PortefeuilleDomaineService portefeuilleDomaineService = new PortefeuilleDomaineService(blockChainRepository);
+        float balance = portefeuilleDomaineService.getBalanceForPortefeuille(porteFeuille);
+
+        ImmutablePair<PorteFeuille,Float> portefeuilleWithBalance = new ImmutablePair<>(porteFeuille,balance);
+
+        return portefeuilleWithBalance;
     }
 
     @Override

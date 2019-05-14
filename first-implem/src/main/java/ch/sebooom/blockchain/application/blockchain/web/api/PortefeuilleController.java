@@ -3,12 +3,15 @@ package ch.sebooom.blockchain.application.blockchain.web.api;
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.PortefeuilleRessource;
 import ch.sebooom.blockchain.application.service.PortefeuilleService;
 import ch.sebooom.blockchain.domain.PorteFeuille;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +39,20 @@ public class PortefeuilleController {
         portefeuilWithBalance.keySet().forEach(porteFeuille -> {
 
             float balance = portefeuilWithBalance.get(porteFeuille);
-            portefeuilleRessourceList.add(new PortefeuilleRessource(porteFeuille.clePublique,balance));
+            portefeuilleRessourceList.add(new PortefeuilleRessource(porteFeuille.clePublique,porteFeuille.adresse,balance));
         });
 
         return ResponseEntity.ok(portefeuilleRessourceList);
+    }
+
+    @GetMapping("/{adresse}")
+    public ResponseEntity<PortefeuilleRessource> getPortefeuilleByAdresse(@PathVariable("adresse") String adresse){
+
+        ImmutablePair<PorteFeuille,Float> porteFeuilleByAdresse = portefeuilleService.getPortefeuilleByAdresse(adresse);
+
+        return ResponseEntity.ok(new PortefeuilleRessource(porteFeuilleByAdresse.left.clePublique,
+                porteFeuilleByAdresse.left.adresse,
+                porteFeuilleByAdresse.right));
+
     }
 }

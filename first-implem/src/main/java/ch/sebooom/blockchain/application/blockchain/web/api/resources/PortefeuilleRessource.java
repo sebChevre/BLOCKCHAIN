@@ -15,9 +15,11 @@ public class PortefeuilleRessource {
 
     private String clePublique;
     private float balance;
+    private String adresse;
 
-    public PortefeuilleRessource(PublicKey clePublique, float balance) {
+    public PortefeuilleRessource(PublicKey clePublique, String adresse, float balance) {
 
+        this.adresse = adresse;
         this.balance = balance;
         this.clePublique = CryptoUtil.getStringFromKey(clePublique);
     }

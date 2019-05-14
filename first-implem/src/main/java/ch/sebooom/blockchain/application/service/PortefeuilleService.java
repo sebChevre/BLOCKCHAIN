@@ -1,6 +1,7 @@
 package ch.sebooom.blockchain.application.service;
 
 import ch.sebooom.blockchain.domain.PorteFeuille;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import java.util.Map;
 public interface PortefeuilleService {
 
     Map<PorteFeuille,Float> getAllPortFeuilleWithBalance();
+
+    ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse);
 
     void savePortefeuille(PorteFeuille portefeuille);
 }

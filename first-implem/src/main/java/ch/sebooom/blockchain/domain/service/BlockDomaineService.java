@@ -16,6 +16,8 @@ public class BlockDomaineService {
         this.transactionDomaineService = transactionDomaineService;
     }
 
+
+
     //Add transactions to this block
     public boolean addTransactionToBlock(Transaction transaction, Block block) {
         //process transaction and check if valid, unless block is genesis block then ignore.

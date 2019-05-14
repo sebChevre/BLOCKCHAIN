@@ -10,6 +10,7 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by seb on .
@@ -24,6 +25,8 @@ public class PortefeuilleDomaineService {
     public PortefeuilleDomaineService(BlockChainRepository blockChainRepository){
         this.blockChainRepository = blockChainRepository;
     }
+
+
 
     public float getBalanceForPortefeuille(PorteFeuille portefeuille){
 
