@@ -45,6 +45,14 @@ public class PortefeuilleServiceImpl implements PortefeuilleService {
     }
 
     @Override
+    public PorteFeuille createPortefeuille() {
+        PorteFeuille newPortefeuille = new PorteFeuille();
+        portefeuilleRepository.savePortefeuille(newPortefeuille);
+        return newPortefeuille;
+
+    }
+
+    @Override
     public ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse){
 
         PorteFeuille porteFeuille = portefeuilleRepository.getPortefeuilleByAdresse(adresse).orElseThrow(() ->

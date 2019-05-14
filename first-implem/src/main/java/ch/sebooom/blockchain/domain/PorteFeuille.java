@@ -15,6 +15,7 @@ public class PorteFeuille {
     public PublicKey clePublique;
     public String adresse;
 
+
     public Map<String,TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 
 

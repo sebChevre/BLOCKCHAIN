@@ -14,6 +14,8 @@ public interface PortefeuilleService {
 
     Map<PorteFeuille,Float> getAllPortFeuilleWithBalance();
 
+    PorteFeuille createPortefeuille();
+
     ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse);
 
     void savePortefeuille(PorteFeuille portefeuille);
