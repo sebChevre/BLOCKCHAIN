@@ -9,7 +9,7 @@ class Block extends Component {
         super(props);
 
         this.state = {
-            show: true
+            show: false
         }
 
         this.click = this.click.bind(this)
@@ -41,7 +41,7 @@ class Block extends Component {
 
                 <ul className="list-group">
                 {transactions.map(transaction => {
-                   return  <Transaction  key={transaction.hash} transaction={transaction}/>
+                    return <Transaction  key={transaction.hash} transaction={transaction} />
                 })}
 
                 </ul>

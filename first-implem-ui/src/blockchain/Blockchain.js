@@ -35,7 +35,13 @@ class Blockchain extends Component {
                     })}
                    </div>
                     <div className="col-4">
-                        <ReactJson src={this.state.blocks} collapsed={true} />
+                        <div className="card">
+                            <div className="card-body">
+                                <h6 className="card-subtitle mb-2 text-muted">Structure Json</h6>
+                                <ReactJson src={this.state.blocks} collapsed={true} />
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
