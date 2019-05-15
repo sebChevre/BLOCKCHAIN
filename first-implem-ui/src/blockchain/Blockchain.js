@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Block from './Block';
+import ReactJson from 'react-json-view'
+
 class Blockchain extends Component {
 
     state = {
@@ -13,7 +15,7 @@ class Blockchain extends Component {
             const blockchain = response.data;
             this.setState({ blocks: blockchain.blocks });
             console.log(this.state)
-            console.log(this.state.blockchain.blocks)
+            console.log(this.state.blocks)
         })
     }
 
@@ -22,14 +24,23 @@ class Blockchain extends Component {
         //const arr = bc.blockchain.blocks;
 
         return (
-            <div>
-                { this.state.blocks.map(block => {
-                    return (
-                        <Block key={block.hash} hash={block.hash} />
+            <div className="container-fluid">
+                <div className="row">
+                   <div className="col-8">
+                    { this.state.blocks.map(block => {
+                        return (
+                            <Block key={block.hash} block={block} />
 
-                    )
-                })}
+                        )
+                    })}
+                   </div>
+                    <div className="col-4">
+                        <ReactJson src={this.state.blocks} collapsed={true} />
+                    </div>
+                </div>
             </div>
+
+
 
 
 

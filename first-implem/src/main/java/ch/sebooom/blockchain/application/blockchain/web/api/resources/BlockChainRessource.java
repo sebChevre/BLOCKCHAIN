@@ -30,7 +30,7 @@ public class BlockChainRessource {
 
         blockChain.blockChain.forEach(block -> {
 
-            BlockRessource blockRessource = new BlockRessource(block.hash,block.hashPrecedent,block.merkleRoot);
+            BlockRessource blockRessource = new BlockRessource(block.hash,block.hashPrecedent,block.merkleRoot,block.blocknumber());
             //map des transactions
             List<TransactionRessource> transactions = new ArrayList<>();
 

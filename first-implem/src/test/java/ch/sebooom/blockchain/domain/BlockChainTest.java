@@ -123,15 +123,15 @@ public class BlockChainTest {
     public void testBlockChainBasic () {
         BlockChain blockchain = new BlockChain();
 
-        Block genesis = new Block( "0");
+        Block genesis = new Block( "0",0);
         blockchain.addBlock(genesis);
         genesis.mine(1);
 
-        Block deux = new Block(genesis.hash);
+        Block deux = new Block(genesis.hash,1);
         blockchain.addBlock(deux);
         deux.mine(1);
 
-        Block trois = new Block(deux.hash);
+        Block trois = new Block(deux.hash,2);
         blockchain.addBlock(trois);
         trois.mine(1);
 
@@ -145,15 +145,15 @@ public class BlockChainTest {
     public void testBlockChainValidWithBlockChainObject () {
         BlockChain blockchain = new BlockChain();
 
-        Block genesis  = new Block( "0");
+        Block genesis  = new Block( "0",0);
         blockchain.addBlock(genesis);
         genesis.mine(1);
 
-        Block deux = new Block(blockchain.getLastHash());
+        Block deux = new Block(blockchain.getLastHash(),1);
         blockchain.addBlock(deux);
         deux.mine(1);
 
-        Block trois = new Block(blockchain.getLastHash());
+        Block trois = new Block(blockchain.getLastHash(),2);
         blockchain.addBlock(trois);
         trois.mine(1);
 
@@ -167,15 +167,15 @@ public class BlockChainTest {
     public void testBlockChainInValid () {
         BlockChain blockchain = new BlockChain();
 
-        Block genesis  = new Block( "0");
+        Block genesis  = new Block( "0",0);
         blockchain.addBlock(genesis);
         genesis.mine(1);
 
-        Block deux = new Block(blockchain.getLastHash());
+        Block deux = new Block(blockchain.getLastHash(),1);
         blockchain.addBlock(deux);
         deux.mine(1);
 
-        Block trois = new Block(CryptoUtil.sha256Hash("123"));
+        Block trois = new Block(CryptoUtil.sha256Hash("123"),2);
         blockchain.addBlock(trois);
         trois.mine(1);
 
@@ -223,13 +223,13 @@ public class BlockChainTest {
         LOGGER.info("WalletB's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletB));
 
         System.out.println("Creating and Mining Genesis block... ");
-        Block genesis = new Block("0");
+        Block genesis = new Block("0",0);
         blockDomaineService.addTransactionToBlock(genesisTransaction,genesis);
         //genesis.addTransaction(genesisTransaction);
         bc.addBlock(genesis);
         LOGGER.info("Genesis block added: " + blockChainAsJson(bc));
         //testing
-        Block block1 = new Block(genesis.hash);
+        Block block1 = new Block(genesis.hash,1);
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("\nWalletA is Attempting to send funds (40) to WalletB...");
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 40f),block1);
@@ -240,7 +240,7 @@ public class BlockChainTest {
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("WalletB's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletB));
 
-        Block block2 = new Block(block1.hash);
+        Block block2 = new Block(block1.hash,2);
         LOGGER.info("\nWalletA Attempting to send more funds (1000) than it has...");
         //block2.addTransaction(walletA.sendFunds(walletA,walletB.clePublique, 1000f));
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 1000f),block2);
@@ -252,7 +252,7 @@ public class BlockChainTest {
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("WalletB's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletB));
 
-        Block block3 = new Block(block2.hash);
+        Block block3 = new Block(block2.hash,3);
         LOGGER.info("\nWalletB is Attempting to send funds (20) to WalletA...");
         //block3.addTransaction(walletB.sendFunds( walletA.clePublique, 20));
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletB,walletA.clePublique, 20),block3);

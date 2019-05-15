@@ -83,7 +83,7 @@ public class Application {
         LOGGER.info("> Transaction genesis ok: {}",genesisTransaction.getJsonRepresentation());
 
         System.out.println("> Création et minage du block Genesis block... ");
-        Block genesis = new Block("0");
+        Block genesis = new Block("0",0);
 
         TransactionDomaineService transactionDomaineService = new TransactionDomaineService(blockChainRepository);
         BlockDomaineService blockDomaineService = new BlockDomaineService(transactionDomaineService);

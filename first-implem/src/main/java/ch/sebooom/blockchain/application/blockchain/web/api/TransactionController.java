@@ -53,7 +53,8 @@ public class TransactionController {
         //Création de la transaction
         Transaction transaction = portefeuilleDomaineService.sendFunds(porteFeuilleDebit,porteFeuilleCredit.clePublique, montant);
         //Créazion du block
-        Block block = new Block(blockChainRepository.getBlockChain().getLastHash());
+        int lastBlockNumber = blockChainRepository.getBlockChain().getLastBlock().blocknumber();
+        Block block = new Block(blockChainRepository.getBlockChain().getLastHash(),lastBlockNumber+1);
         blockDomaineService.addTransactionToBlock(transaction,block);
         blockChainRepository.getBlockChain().addBlock(block);
 

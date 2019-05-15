@@ -17,6 +17,7 @@ public class Block {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Block.class.getName());
 
+    private int blockNumber;
     private static final int DEFAULT_MINING_DIFFICULTY = 5;
     private static final String GENESIS_HASH_PRECEDENT = "0";
     public String hash; //le hash du bloc, la signature
@@ -30,8 +31,9 @@ public class Block {
      * Constructeur d'un block
      * @param hashPrecedent le hash du block précédent
      */
-    public Block(String hashPrecedent) {
+    public Block(String hashPrecedent, int blockNumber) {
 
+        this.blockNumber = blockNumber;
         checkHashPrecedent(hashPrecedent);
 
 
@@ -48,6 +50,9 @@ public class Block {
         }
     }
 
+    public int blocknumber(){
+        return this.blockNumber;
+    }
     /**
      * Calcule le hash (signature) du bloc <br/>
      * Le hash est composé ainsi:
