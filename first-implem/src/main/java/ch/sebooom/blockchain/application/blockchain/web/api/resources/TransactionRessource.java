@@ -22,10 +22,11 @@ public class TransactionRessource {
     float value;
     private List<OutputRessource> outputs = new ArrayList<>();
     private List<InputRessource> inputs = new ArrayList<>();
+    private String identifiant;
 
 
 
-    public TransactionRessource(float inputsValue, float outputsValue, PublicKey expediteur, PublicKey destinataire, float value) {
+    public TransactionRessource(float inputsValue, float outputsValue, PublicKey expediteur, PublicKey destinataire, float value, String identifiant) {
         this.inputsValue = inputsValue;
         this.outputsValue = outputsValue;
 
@@ -33,6 +34,7 @@ public class TransactionRessource {
 
         this.destinataire = CryptoUtil.getStringFromKey(destinataire);
         this.value = value;
+        this.identifiant = identifiant;
     }
 
     public void add(OutputRessource outputRessource) {

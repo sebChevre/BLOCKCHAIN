@@ -9,6 +9,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Transaction {
 
@@ -22,6 +23,7 @@ public class Transaction {
     public byte[] signature; // previent le fait que personne d'autre ne peut utiliser mon protefeuille
     public List<TransactionInput> inputs = new ArrayList<TransactionInput>();
     public List<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
+    public String identifiant;
 
     private static int sequence = 0; // compteur du nombre de transaction générées
 
@@ -31,13 +33,12 @@ public class Transaction {
         this.destinataire = to;
         this.value = value;
         this.inputs = inputs;
+        this.identifiant = UUID.randomUUID().toString();
     }
 
     // Constructor:
     public Transaction(PublicKey from, PublicKey to, float value) {
-        this.expediteur = from;
-        this.destinataire = to;
-        this.value = value;
+        this(from,to,value,new ArrayList<>());
     }
 
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Transaction from "./Transaction";
+import Transaction from "./TransactionCmp";
 
-class Block extends Component {
-
+class BlockCmp extends Component {
 
 
     constructor (props){
@@ -41,7 +40,7 @@ class Block extends Component {
 
                 <ul className="list-group">
                 {transactions.map(transaction => {
-                    return <Transaction  key={transaction.hash} transaction={transaction} />
+                    return <Transaction  key={transaction.identifiant} transaction={transaction} />
                 })}
 
                 </ul>
@@ -51,4 +50,4 @@ class Block extends Component {
     }
 }
 
-export default Block;
+export default BlockCmp;

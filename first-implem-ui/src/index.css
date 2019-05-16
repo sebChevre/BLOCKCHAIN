@@ -54,3 +54,14 @@ body {
   font-style: italic;
   font-weight: bold;
 }
+
+#montant {
+  width: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#portefeuilles_list{
+  margin-left: 10px;
+  margin-right: 10px;
+}

@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 
-class Transaction extends Component {
-
-    constructor (props){
-        super(props);
+class TransactionCmp extends Component {
 
 
-    }
     render() {
 
         const transaction = this.props.transaction;
-        const key = this.props.key;
+
 
        return (
-           <li key={key} className="list-group-item">
+           <li className="list-group-item">
                <h1>
-                   <span className="badge badge-primary badge-pill">{transaction.value}</span>
+                   <span className="badge badge-primary badge-pill">{transaction.value +" CS"}</span>
                </h1>
                <span className="from-lbl">From:</span><span className="from-value">{transaction.expediteur}</span><br/>
                 <span className="to-lbl">To:</span><span className="to-value">{transaction.destinataire}</span>
@@ -25,4 +21,4 @@ class Transaction extends Component {
     }
 }
 
-export default Transaction;
+export default TransactionCmp;

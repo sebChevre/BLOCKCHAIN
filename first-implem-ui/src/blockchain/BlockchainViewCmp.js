@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Block from './Block';
+import Block from './BlockCmp';
 import ReactJson from 'react-json-view'
 
-class Blockchain extends Component {
+class BlockchainCmp extends Component {
 
     state = {
         blocks: []
@@ -54,4 +54,4 @@ class Blockchain extends Component {
     }
 }
 
-export default Blockchain;
+export default BlockchainCmp;

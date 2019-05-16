@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Blockchain from './blockchain/Blockchain';
-import PortefeuillesCmp from "./blockchain/PortefeuilleCmp";
+import Blockchain from './blockchain/BlockchainViewCmp';
+import PortefeuillesCmp from "./blockchain/PortefeuillesViewCmp";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
         <div id="container-fluid mainContainer">
             <Router>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <a className="navbar-brand" href="#">CryptoSous</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

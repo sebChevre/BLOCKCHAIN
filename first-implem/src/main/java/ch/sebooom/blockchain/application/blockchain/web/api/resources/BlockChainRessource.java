@@ -41,7 +41,8 @@ public class BlockChainRessource {
                         transaction.getOutputsValue(),
                         transaction.expediteur,
                         transaction.destinataire,
-                        transaction.value);
+                        transaction.value,
+                transaction.identifiant);
 
                 //map des outputs
                 transaction.outputs.forEach(output -> {
