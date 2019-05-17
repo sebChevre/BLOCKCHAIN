@@ -5,19 +5,40 @@ import ReactJson from 'react-json-view'
 
 class PortefeuillesViewCmp extends Component {
 
+    constructor (props){
+        super(props);
+
+        this.loadPortefeuilles = this.loadPortefeuilles.bind(this);
+    }
+
     state = {
         portefeuilles: []
     }
 
     componentDidMount() {
+       this.loadPortefeuilles();
+    }
+
+    loadPortefeuilles () {
+
+        console.log("load portefeuilles....")
+
         axios.get(`/portefeuilles`)
-        .then(response => {
-            const portefeuilles = response.data;
-            this.setState({ portefeuilles: portefeuilles });
-        })
+            .then(response => {
+                const portefeuilles = response.data;
+                this.setState({ portefeuilles: portefeuilles });
+                console.log(this.state);
+
+            })
+
+
     }
 
     render () {
+
+        console.log("render")
+        console.log(this.state.portefeuilles)
+
         return (
             <div>
             <h1>Portefeuilles</h1>
@@ -25,8 +46,14 @@ class PortefeuillesViewCmp extends Component {
                     <div className="row">
                         <div className="col-8">
                             { this.state.portefeuilles.map(portefeuille => {
+
+                                console.log(portefeuille)
+
                                 return (
-                                    <PortefeuilleCmp key={portefeuille.adresse} portefeuille={portefeuille} portefeuilles={this.state.portefeuilles} />
+                                    <PortefeuilleCmp key={portefeuille.adresse}
+                                                     portefeuille={portefeuille}
+                                                     portefeuilles={this.state.portefeuilles}
+                                                     refreshListParent={this.loadPortefeuilles}                                           />
 
                                 )
                             })}

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * Created by seb on .
  * <p>
@@ -53,11 +55,13 @@ public class TransactionController {
         //Création de la transaction
         Transaction transaction = portefeuilleDomaineService.sendFunds(porteFeuilleDebit,porteFeuilleCredit.clePublique, montant);
         //Créazion du block
+        Date d = new Date();
+        LOGGER.info("Block creation");
         int lastBlockNumber = blockChainRepository.getBlockChain().getLastBlock().blocknumber();
         Block block = new Block(blockChainRepository.getBlockChain().getLastHash(),lastBlockNumber+1);
         blockDomaineService.addTransactionToBlock(transaction,block);
         blockChainRepository.getBlockChain().addBlock(block);
-
+        LOGGER.info("Block mined in " + (new Date().getTime() - d.getTime()));
         return ResponseEntity.ok(null);
     }
 }

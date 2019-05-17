@@ -20,8 +20,6 @@ class BlockchainCmp extends Component {
     }
 
     render() {
-        const bc = this.state.blockchain;
-        //const arr = bc.blockchain.blocks;
 
         return (
             <div className="container-fluid">
