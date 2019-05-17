@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+#mainContainer {
+  padding:20px;
+}
+
+.block {
+  width:100%;
+}
+
+.hidden { display:none; }
+
+.block_hash_lbl{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.block_hash_value{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+  float: right;
+}
+
+.from-lbl{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.from-value{
+  font-size: small;
+  font-style: italic;
+}
+
+.to-lbl{
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.to-value{
+  font-size: small;
+  font-style: italic;
+}
+
+.blocknumber {
+  font-family: Arial;
+  font-style: italic;
+  font-weight: bold;
+}
+
+#montant {
+  width: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#portefeuilles_list{
+  margin-left: 10px;
+  margin-right: 10px;
+}
