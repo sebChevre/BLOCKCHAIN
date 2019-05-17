@@ -7,9 +7,13 @@ class PortefeuilleCmp extends Component {
 
         this.state = {
             show: false,
-            to: "",
-            from: this.props.portefeuille.adresse,
-            montant: ""
+            sendValues:{
+                to: "",
+                from: this.props.portefeuille.adresse,
+                montant: ""
+            },
+            portefeuille:this.props.portefeuille
+
         }
 
         this.click = this.click.bind(this);
@@ -22,27 +26,29 @@ class PortefeuilleCmp extends Component {
 
     changeMontant(e){
         console.log("Montant change: " + e.target.value)
-        this.setState({
-            montant:e.target.value
-        })
+        this.setState(Object.assign(this.state.sendValues,
+            {montant:e.target.value}
+        ))
     }
 
     changeDestinataire(e){
         console.log("Destinataire change: " + e.target.value)
-        this.setState({
-            to:e.target.value
-        })
+        this.setState(Object.assign(this.state.sendValues,
+            {to:e.target.value}
+        ))
         console.log(this.state)
     }
 
     refreshCmp () {
+        console.log("Refresh")
         this.setState({state:this.state})
+        console.log(this.state)
     }
     envoyerMontant () {
 
         let that = this;
 
-        axios.post('/transaction/' + this.state.from + "/" + this.state.to + "/" + this.state.montant, {
+        axios.post('/transaction/' + this.state.sendValues.from + "/" + this.state.sendValues.to + "/" + this.state.sendValues.montant, {
 
         })
         .then(function (response) {
@@ -61,21 +67,21 @@ class PortefeuilleCmp extends Component {
 
     render() {
 
-        const portefeuille = this.props.portefeuille;
+       // const portefeuille = this.props.portefeuille;
         const portefeuilles = this.props.portefeuilles;
 
 
         return (
             <div className="card block">
                 <div className="card-header" onClick={this.click}>
-                    <span className="blocknumber">Portefeuille : {portefeuille.adresse}</span>
+                    <span className="blocknumber">Portefeuille : {this.state.portefeuille.adresse}</span>
                 </div>
                 <div className={this.state.show ? "card-body" : "hidden"}>
                     <h1>
-                        <span className="badge badge-primary badge-pill">{portefeuille.balance +" CS"}</span>
+                        <span className="badge badge-primary badge-pill">{this.state.portefeuille.balance +" CS"}</span>
                     </h1>
-                    <span className="block_hash_lbl">Clé: </span><span className="block_hash_value"> {portefeuille.clePublique}</span><br />
-                    <span className="block_hash_lbl">adresse: </span><span className="block_hash_value"> {portefeuille.adresse}</span>
+                    <span className="block_hash_lbl">Clé: </span><span className="block_hash_value"> {this.state.portefeuille.clePublique}</span><br />
+                    <span className="block_hash_lbl">adresse: </span><span className="block_hash_value"> {this.state.portefeuille.adresse}</span>
 
                     <hr/>
 
