@@ -1,5 +1,6 @@
 package ch.sebooom.blockchain.application;
 
+import ch.sebooom.blockchain.application.blockchain.websocket.client.WebSocketStompSessionHandler;
 import ch.sebooom.blockchain.application.service.BlockchainService;
 import ch.sebooom.blockchain.application.service.PortefeuilleService;
 import ch.sebooom.blockchain.domain.*;
@@ -13,10 +14,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.annotation.PostConstruct;
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by seb on .
@@ -25,6 +39,7 @@ import java.security.Security;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "ch.sebooom.blockchain")
+@EnableScheduling
 public class Application {
 
     //@Autowired
@@ -39,10 +54,32 @@ public class Application {
     @Autowired
     BlockChainRepository blockChainRepository;
 
+    @Autowired
+    WebSocketStompSessionHandler webSocketStompSessionHandler;
+
+
+
+
+
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
 
+    @Bean
+    public List<Node> nodesConnected(){
+        return new ArrayList<>();
+    }
 
+    public List<String> getIpsToFindNodes () {
+        return Arrays.asList("9090","9091","9092","9093","9094","9095",
+                "9096","9097","9098","9099");
+    }
+
+    @Bean
+    public Node node () {
+        Node n = new Node();
+        n.setNodeId(UUID.randomUUID().toString());
+        return n;
+    }
 
     public  static void main(String args[]) {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); //Setup Bouncey castle as a Security Provider
@@ -50,8 +87,19 @@ public class Application {
         SpringApplication.run(Application.class);
     }
 
+    /**
+    @Scheduled(fixedDelay = 1000)
+    public void scheduleFixedDelayTask() {
+        System.out.println(
+                "Fixed delay task - " + System.currentTimeMillis() / 1000);
+    }
+    */
+
     @PostConstruct
     public void initApplication () {
+
+        connectToNode();
+
         TransactionDomaineService transactionDomaineService = new TransactionDomaineService(blockChainRepository);
         BlockDomaineService blockDomaineService = new BlockDomaineService(transactionDomaineService);
         PortefeuilleDomaineService portefeuilleDomaineService = new PortefeuilleDomaineService(blockChainRepository);
@@ -94,6 +142,39 @@ public class Application {
         blockchainService.getBlockChain().addBlock(block);
 
     }
+
+
+    private void connectToNode() {
+
+        WebSocketClient client = new StandardWebSocketClient();
+
+        //iteration sur la liste des noeuds a trouver pour la connection initiale
+        getIpsToFindNodes().stream().filter(nodePort -> {
+
+            return connectionToNode(nodePort,client);
+
+        }).findFirst();
+
+    }
+
+    private boolean connectionToNode(String nodePort, WebSocketClient client) {
+
+        LOGGER.info("Trying to connect to node, port: {}",nodePort);
+        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        ListenableFuture<StompSession> future
+                = stompClient.connect("ws://localhost:" + nodePort + "/join", webSocketStompSessionHandler);
+
+        try {
+            future.get(1, TimeUnit.SECONDS);
+            LOGGER.info("Connection to node, port: {}, successfull!",nodePort);
+            return true;
+        } catch (Exception e) {
+            LOGGER.warn("Connection to node, port: {}, failed! - {}",nodePort,e.getMessage());
+            return false;
+        }
+    }
+
 
     private void genererBlockGenesis(BlockDomaineService blockDomaineService, Transaction genesisTransaction) {
         Block genesis = new Block("0",0);

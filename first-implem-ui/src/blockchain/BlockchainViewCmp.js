@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Block from './BlockCmp';
 import ReactJson from 'react-json-view'
+import WebSocketHandlerCmp from './WebSocketHandlerCmp'
 
 class BlockchainCmp extends Component {
 
@@ -41,6 +42,7 @@ class BlockchainCmp extends Component {
                         </div>
 
                     </div>
+
                 </div>
             </div>
 

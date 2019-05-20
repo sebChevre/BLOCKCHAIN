@@ -5,7 +5,11 @@
 		</encoder>
 	</appender>
 
-	<root level="info">
+	<logger name="org" level="INFO" />
+
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
+
+
 </configuration>
