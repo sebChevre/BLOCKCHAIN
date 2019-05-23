@@ -15,5 +15,8 @@ import lombok.ToString;
 public class Node {
 
     private String nodeId;
+    private String port;
+    private String host = "localhost";
+
 
 }

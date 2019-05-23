@@ -16,10 +16,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.env.Environment;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -54,37 +58,34 @@ public class Application {
     @Autowired
     BlockChainRepository blockChainRepository;
 
-    @Autowired
-    WebSocketStompSessionHandler webSocketStompSessionHandler;
-
-
 
 
 
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
 
+
     @Bean
-    public List<Node> nodesConnected(){
-        return new ArrayList<>();
+    public NodesConnected nodesConnected(){
+        LOGGER.info("Initiate nodesConnected");
+        return new NodesConnected();
     }
 
-    public List<String> getIpsToFindNodes () {
-        return Arrays.asList("9090","9091","9092","9093","9094","9095",
-                "9096","9097","9098","9099");
-    }
+
+
+
 
     @Bean
     public Node node () {
         Node n = new Node();
-        n.setNodeId(UUID.randomUUID().toString());
+
         return n;
     }
 
     public  static void main(String args[]) {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); //Setup Bouncey castle as a Security Provider
 
-        SpringApplication.run(Application.class);
+         SpringApplication.run(Application.class);
     }
 
     /**
@@ -98,7 +99,7 @@ public class Application {
     @PostConstruct
     public void initApplication () {
 
-        connectToNode();
+       // connectToNode();
 
         TransactionDomaineService transactionDomaineService = new TransactionDomaineService(blockChainRepository);
         BlockDomaineService blockDomaineService = new BlockDomaineService(transactionDomaineService);
@@ -144,36 +145,7 @@ public class Application {
     }
 
 
-    private void connectToNode() {
 
-        WebSocketClient client = new StandardWebSocketClient();
-
-        //iteration sur la liste des noeuds a trouver pour la connection initiale
-        getIpsToFindNodes().stream().filter(nodePort -> {
-
-            return connectionToNode(nodePort,client);
-
-        }).findFirst();
-
-    }
-
-    private boolean connectionToNode(String nodePort, WebSocketClient client) {
-
-        LOGGER.info("Trying to connect to node, port: {}",nodePort);
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        ListenableFuture<StompSession> future
-                = stompClient.connect("ws://localhost:" + nodePort + "/join", webSocketStompSessionHandler);
-
-        try {
-            future.get(1, TimeUnit.SECONDS);
-            LOGGER.info("Connection to node, port: {}, successfull!",nodePort);
-            return true;
-        } catch (Exception e) {
-            LOGGER.warn("Connection to node, port: {}, failed! - {}",nodePort,e.getMessage());
-            return false;
-        }
-    }
 
 
     private void genererBlockGenesis(BlockDomaineService blockDomaineService, Transaction genesisTransaction) {

@@ -35,6 +35,7 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         LOGGER.info("New session established : " + session.getSessionId());
+        LOGGER.info("New session established : " + connectedHeaders);
 
         session.subscribe("/topic/nodes", nodeJoiningFrameHandler);
         LOGGER.info("Subscribed to /topic/nodes");
@@ -54,6 +55,7 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
         return WebSocketResponse.class;
     }
 
+    /**
     @Override
     public void handleFrame(StompHeaders headers, Object payload) {
 
@@ -61,9 +63,10 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
 
         LOGGER.info("Message received: " + msg.getCommandReceive());
 
+
         //WebSocketMessage msg = (WebSocketMessage) payload;
         //logger.info("Received : " + msg.getText() + " from : " + msg.getFrom());
-    }
+    }*/
 
     private NodeJoiningMessage getNodeJoiningMessage () {
         LOGGER.info("Construct node joining message....");
@@ -73,13 +76,5 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
         return nodeJoiningMessage;
     }
 
-    /**
-     * A sample message instance.
-     * @return instance of <code>Message</code>
-     */
-    private WebSocketMessage getSampleMessage() {
-        WebSocketMessage msg = new WebSocketMessage();
-        msg.setCommande("Join");
-        return msg;
-    }
+
 }

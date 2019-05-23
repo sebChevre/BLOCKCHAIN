@@ -1,6 +1,7 @@
 package ch.sebooom.blockchain.application.blockchain.websocket.client.joining;
 
 import ch.sebooom.blockchain.domain.Node;
+import ch.sebooom.blockchain.domain.NodesConnected;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class NodeJoiningFrameHandler implements StompFrameHandler {
     private Logger LOGGER = LoggerFactory.getLogger(NodeJoiningFrameHandler.class);
 
     @Autowired
-    public List<Node> nodesConnected;
+    NodesConnected nodesConnected;
 
     @Override
     public Type getPayloadType(StompHeaders stompHeaders) {
@@ -33,7 +34,12 @@ public class NodeJoiningFrameHandler implements StompFrameHandler {
     @Override
     public void handleFrame(StompHeaders stompHeaders, Object payload) {
         NodeJoiningMessage nodeJoiningMessage = (NodeJoiningMessage) payload;
-        LOGGER.info("Message reçu : " + payload + ", add node to connectedNodes");
-        nodesConnected.add(nodeJoiningMessage.getNode());
+        LOGGER.info("Message reçu : {}, {}:{} ,add node to connectedNodes",
+                nodeJoiningMessage.getNode().getNodeId(),
+                nodeJoiningMessage.getNode().getHost(),
+                nodeJoiningMessage.getNode().getPort());
+        nodesConnected.addNode(nodeJoiningMessage.getNode());
+        LOGGER.info("Connected nodes{}: {}", nodesConnected.hashCode(),nodesConnected);
+
     }
 }

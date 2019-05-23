@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Blockchain from './blockchain/BlockchainViewCmp';
 import PortefeuillesCmp from "./blockchain/PortefeuillesViewCmp";
+import NoeudsCmp from './blockchain/NoeudsCmp'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
@@ -28,6 +29,10 @@ class App extends Component {
                             <Link className="nav-link"  to="/portefeuilles">Portefeuilles</Link>
 
                         </li>
+                      <li className="nav-item">
+                        <Link className="nav-link"  to="/noeuds">Noeuds</Link>
+
+                      </li>
 
                     </ul>
 
@@ -39,6 +44,7 @@ class App extends Component {
                     <Route exact path="/" component={Blockchain} />
                     <Route path="/blockchain" component={Blockchain}/>
                     <Route path="/portefeuilles" component={PortefeuillesCmp} />
+                    <Route path="/noeuds" component={NoeudsCmp} />
 
             </div>
 
