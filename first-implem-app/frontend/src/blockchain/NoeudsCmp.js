@@ -13,6 +13,19 @@ class NoeudsCmp extends Component {
 
     componentDidMount() {
         this.loadDetailNoeud();
+        this.loadConnectedNoeuds();
+    }
+
+    loadConnectedNoeuds () {
+        console.log("load list connectec noeud....")
+
+        axios.get(`/noeuds/connected`)
+            .then(response => {
+                const connectedNoeud = response.data;
+                this.setState({ moeudsConnectes: connectedNoeud });
+                console.log(this.state);
+
+            })
     }
 
     loadDetailNoeud () {
@@ -37,9 +50,12 @@ class NoeudsCmp extends Component {
                     <h3 className="display-4">{this.state.noeud.noeudId}</h3>
                     <p className="lead">Adresse: {this.state.noeud.host}:{this.state.noeud.port} </p>
                     <hr className="my-4" />
-                        <p>It uses utility classes for typography and spacing to space content out within the larger
-                            container.</p>
-                        <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+
+                    <ul>
+                        { this.state.moeudsConnectes.map(noeud => {
+                            return (<li>{noeud.noeudId} - {noeud.host}:{noeud.port}</li>)
+                        })}
+                    </ul>
                 </div>
 
             </div>
