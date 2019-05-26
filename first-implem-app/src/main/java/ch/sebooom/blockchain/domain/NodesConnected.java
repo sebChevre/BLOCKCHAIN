@@ -9,13 +9,13 @@ import java.util.List;
 @Component
 public class NodesConnected {
 
-    public List<Node> nodesConnected = new ArrayList<>();
+    public List<Noeud> nodesConnected = new ArrayList<>();
 
-    public void addNode(Node node){
-        nodesConnected.add(node);
+    public void addNode(Noeud noeud){
+        nodesConnected.add(noeud);
     }
 
-    public List<Node> getConnectedNodes(){
+    public List<Noeud> getConnectedNodes(){
         return nodesConnected;
     }
 }

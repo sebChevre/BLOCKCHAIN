@@ -12,7 +12,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Node {
+/**
+ * Un noeud est le client de l'application <br/>
+ *
+ */
+public class Noeud {
 
     private String nodeId;
     private String port;

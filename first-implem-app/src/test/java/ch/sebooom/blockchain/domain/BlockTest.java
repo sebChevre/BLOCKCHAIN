@@ -23,12 +23,12 @@ public class BlockTest {
         Throwable nullDataException = catchThrowable(() -> {
             Block b = new Block("",0);
         });
-        assertThat(nullDataException).isInstanceOf(NullPointerException.class);
+        assertThat(nullDataException).isInstanceOf(IllegalArgumentException.class);
 
         Throwable nullHashException = catchThrowable(() -> {
             Block b = new Block(null,1);
         });
-        assertThat(nullHashException).isInstanceOf(NullPointerException.class);
+        assertThat(nullHashException).isInstanceOf(IllegalArgumentException.class);
 
     }
 

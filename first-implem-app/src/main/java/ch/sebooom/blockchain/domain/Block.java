@@ -1,13 +1,13 @@
 package ch.sebooom.blockchain.domain;
 
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -34,6 +34,9 @@ public class Block {
     public Block(String hashPrecedent, int blockNumber) {
 
         this.blockNumber = blockNumber;
+        if(StringUtils.isBlank(hashPrecedent)){
+            throw new IllegalArgumentException("hashPrecednt can't be null or empty");
+        }
         checkHashPrecedent(hashPrecedent);
 
 
@@ -43,7 +46,6 @@ public class Block {
     }
 
     private void checkHashPrecedent(String hashToVerify){
-        Objects.requireNonNull(hashToVerify);
 
         if(!hashToVerify.equals(GENESIS_HASH_PRECEDENT)){
             CryptoUtil.checkHashIntegrity(hashToVerify);

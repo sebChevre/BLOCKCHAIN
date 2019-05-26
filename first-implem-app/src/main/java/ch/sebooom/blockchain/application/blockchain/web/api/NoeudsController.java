@@ -1,8 +1,7 @@
 package ch.sebooom.blockchain.application.blockchain.web.api;
 
-import ch.sebooom.blockchain.application.Application;
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudRessource;
-import ch.sebooom.blockchain.domain.Node;
+import ch.sebooom.blockchain.domain.Noeud;
 import ch.sebooom.blockchain.domain.NodesConnected;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ public class NoeudsController {
 
 
     @Autowired
-    Node noeud;
+    Noeud noeud;
 
     @Autowired
     NodesConnected nodesConnected;

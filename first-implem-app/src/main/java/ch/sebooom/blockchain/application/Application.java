@@ -1,6 +1,5 @@
 package ch.sebooom.blockchain.application;
 
-import ch.sebooom.blockchain.application.blockchain.websocket.client.WebSocketStompSessionHandler;
 import ch.sebooom.blockchain.application.service.BlockchainService;
 import ch.sebooom.blockchain.application.service.PortefeuilleService;
 import ch.sebooom.blockchain.domain.*;
@@ -16,25 +15,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.env.Environment;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.annotation.PostConstruct;
 import java.security.Security;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by seb on .
@@ -76,8 +60,8 @@ public class Application {
 
 
     @Bean
-    public Node node () {
-        Node n = new Node();
+    public Noeud node () {
+        Noeud n = new Noeud();
 
         return n;
     }

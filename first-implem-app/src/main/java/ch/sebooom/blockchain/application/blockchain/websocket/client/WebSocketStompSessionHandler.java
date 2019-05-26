@@ -1,10 +1,10 @@
 package ch.sebooom.blockchain.application.blockchain.websocket.client;
 
-import ch.sebooom.blockchain.application.blockchain.websocket.WebSocketMessage;
 import ch.sebooom.blockchain.application.blockchain.websocket.WebSocketResponse;
 import ch.sebooom.blockchain.application.blockchain.websocket.client.joining.NodeJoiningFrameHandler;
 import ch.sebooom.blockchain.application.blockchain.websocket.client.joining.NodeJoiningMessage;
-import ch.sebooom.blockchain.domain.Node;
+import ch.sebooom.blockchain.domain.NodesConnected;
+import ch.sebooom.blockchain.domain.Noeud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,10 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
     private Logger LOGGER = LoggerFactory.getLogger(WebSocketStompSessionHandler.class);
 
     @Autowired
-    public Node node;
+    public Noeud noeud;
+
+    @Autowired
+    NodesConnected nodesConnected;
 
     @Autowired
     public NodeJoiningFrameHandler nodeJoiningFrameHandler;
@@ -55,24 +58,15 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
         return WebSocketResponse.class;
     }
 
-    /**
-    @Override
-    public void handleFrame(StompHeaders headers, Object payload) {
-
-        WebSocketResponse msg = (WebSocketResponse) payload;
-
-        LOGGER.info("Message received: " + msg.getCommandReceive());
 
 
-        //WebSocketMessage msg = (WebSocketMessage) payload;
-        //logger.info("Received : " + msg.getText() + " from : " + msg.getFrom());
-    }*/
 
     private NodeJoiningMessage getNodeJoiningMessage () {
         LOGGER.info("Construct node joining message....");
         NodeJoiningMessage nodeJoiningMessage = new NodeJoiningMessage();
-        nodeJoiningMessage.setNode(node);
-        LOGGER.info("Message ok, with node: " + node);
+        nodeJoiningMessage.setNoeud(noeud);
+        nodeJoiningMessage.addConnectedNoeuds(nodesConnected);
+        LOGGER.info("Message ok, with node: " + noeud);
         return nodeJoiningMessage;
     }
 
