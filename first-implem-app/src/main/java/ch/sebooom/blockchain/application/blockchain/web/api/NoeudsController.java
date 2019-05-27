@@ -1,8 +1,7 @@
 package ch.sebooom.blockchain.application.blockchain.web.api;
 
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudRessource;
-import ch.sebooom.blockchain.domain.Noeud;
-import ch.sebooom.blockchain.domain.NodesConnected;
+import ch.sebooom.blockchain.domain.StatusNoeud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +19,21 @@ public class NoeudsController {
 
 
     @Autowired
-    Noeud noeud;
+    StatusNoeud statusNoeud;
 
-    @Autowired
-    NodesConnected nodesConnected;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(NoeudsController.class.getName());
     @GetMapping
     public ResponseEntity<NoeudRessource> getNoeudInfo(){
-        return ResponseEntity.ok(new NoeudRessource(noeud));
+        return ResponseEntity.ok(new NoeudRessource(statusNoeud.noeud));
     }
 
     @GetMapping("/connected")
     public ResponseEntity<List<NoeudRessource>> getConnectedNodes () {
 
-        LOGGER.info("NodesConnected: {}",nodesConnected);
+        LOGGER.info("NodesConnected: {}", statusNoeud);
 
-        return ResponseEntity.ok(nodesConnected.getConnectedNodes().stream().map(node -> {
+        return ResponseEntity.ok(statusNoeud.noeudsConnectes().stream().map(node -> {
             return new NoeudRessource(node);
         }).collect(Collectors.toList()));
 

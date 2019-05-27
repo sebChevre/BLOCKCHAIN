@@ -50,9 +50,9 @@ public class Application {
 
 
     @Bean
-    public NodesConnected nodesConnected(){
-        LOGGER.info("Initiate nodesConnected");
-        return new NodesConnected();
+    public StatusNoeud nodesConnected(){
+        LOGGER.info("Initiate noeudsConnectes");
+        return new StatusNoeud();
     }
 
 
@@ -60,10 +60,9 @@ public class Application {
 
 
     @Bean
-    public Noeud noeud() {
-        Noeud n = new Noeud();
-
-        return n;
+    public StatusNoeud statusNoeud() {
+       StatusNoeud statusNoeud = new StatusNoeud();
+       return statusNoeud;
     }
 
     public  static void main(String args[]) {

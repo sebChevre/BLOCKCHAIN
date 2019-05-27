@@ -5,21 +5,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class NoeudRessource {
 
-    private String noeudId;
+    private String nodeId;
     private String host;
     private String port;
 
     public NoeudRessource(Noeud noeud){
-        this.noeudId = noeud.getNodeId();
+        this.nodeId = noeud.getNodeId();
         this.host = noeud.getHost();
         this.port = noeud.getPort();
     }
 
+    public NoeudRessource(){}
     public String json()  {
 
         ObjectMapper m = new ObjectMapper();
