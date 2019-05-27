@@ -1,22 +1,20 @@
 package ch.sebooom.blockchain.application.events;
 
+import ch.sebooom.blockchain.application.blockchain.websocket.SSEHandler;
 import ch.sebooom.blockchain.application.blockchain.websocket.client.WebSocketStompSessionHandler;
-import ch.sebooom.blockchain.domain.Noeud;
 import ch.sebooom.blockchain.domain.NodesConnected;
+import ch.sebooom.blockchain.domain.Noeud;
+import com.launchdarkly.eventsource.EventHandler;
+import com.launchdarkly.eventsource.EventSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -60,12 +58,19 @@ public class ApplicationEventListener {
      */
     private void connectToNode() {
 
-        WebSocketClient client = new StandardWebSocketClient();
+        EventHandler eventHandler = new SSEHandler();
+
+
 
         //iteration sur la liste des noeuds a trouver pour la connection initiale
         getIpsToFindNodes().stream()
-                .filter(nodePort -> connectionToNode(nodePort,client))
-                .findFirst();
+                .filter(noeudPort ->
+                        noeudPort != noeud.getPort()
+                    ).forEach(noeudPort -> {
+                        connectionToNode(noeudPort,eventHandler);
+        });
+
+
     }
 
     public List<String> getIpsToFindNodes () {
@@ -77,25 +82,25 @@ public class ApplicationEventListener {
     /**
      * Tentative de connection au serveur ws sur le port passé en paramètre
      * @param nodePort le port
-     * @param client le client ws
+     * @param eventHandler le gestionnaire d'écévnements
      * @return un boolean corresponsant à l'état de la connection
      */
-    private boolean connectionToNode(String nodePort, WebSocketClient client) {
+    private void connectionToNode(String nodePort, EventHandler eventHandler) {
 
-        LOGGER.info("Trying to connect to node, port: {}",nodePort);
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        ListenableFuture<StompSession> future
-                = stompClient.connect("ws://localhost:" + nodePort + "/join", webSocketStompSessionHandler);
+        LOGGER.info("Trying to connect to noeud, port: {}",nodePort);
 
-        try {
-            future.get(1, TimeUnit.SECONDS);
+        String url = String.format("http://localhost:%s/sse-stream",nodePort);
+        EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(url));
+        builder.connectTimeoutMs(1000);
+        builder.
 
-            LOGGER.info("Connection to node, port: {}, successfull!",nodePort);
-            return true;
-        } catch (Exception e) {
-            LOGGER.warn("Connection to node, port: {}, failed! - {}",nodePort,e.getMessage());
-            return false;
+        try (EventSource eventSource = builder.build()) {
+            eventSource.setReconnectionTimeMs(3000);
+            eventSource.start();
+
+            TimeUnit.MINUTES.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

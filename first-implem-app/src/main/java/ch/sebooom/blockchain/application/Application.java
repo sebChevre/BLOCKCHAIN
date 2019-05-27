@@ -60,7 +60,7 @@ public class Application {
 
 
     @Bean
-    public Noeud node () {
+    public Noeud noeud() {
         Noeud n = new Noeud();
 
         return n;

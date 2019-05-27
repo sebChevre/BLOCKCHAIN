@@ -32,7 +32,7 @@ public class NodeJoiningFrameHandler implements StompFrameHandler {
     @Override
     public void handleFrame(StompHeaders stompHeaders, Object payload) {
         NodeJoiningMessage nodeJoiningMessage = (NodeJoiningMessage) payload;
-        LOGGER.info("Message reçu : {}, {}:{} ,add node to connectedNodes",
+        LOGGER.info("Message reçu : {}, {}:{} ,add noeud to connectedNodes",
                 nodeJoiningMessage.getNoeud().getNodeId(),
                 nodeJoiningMessage.getNoeud().getHost(),
                 nodeJoiningMessage.getNoeud().getPort());

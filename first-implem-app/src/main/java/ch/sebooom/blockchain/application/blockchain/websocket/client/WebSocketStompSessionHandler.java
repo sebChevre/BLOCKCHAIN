@@ -1,6 +1,5 @@
 package ch.sebooom.blockchain.application.blockchain.websocket.client;
 
-import ch.sebooom.blockchain.application.blockchain.websocket.WebSocketResponse;
 import ch.sebooom.blockchain.application.blockchain.websocket.client.joining.NodeJoiningFrameHandler;
 import ch.sebooom.blockchain.application.blockchain.websocket.client.joining.NodeJoiningMessage;
 import ch.sebooom.blockchain.domain.NodesConnected;
@@ -13,8 +12,6 @@ import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Type;
 
 /**
  * Created by seb on .
@@ -53,20 +50,15 @@ public class WebSocketStompSessionHandler extends StompSessionHandlerAdapter {
         LOGGER.error("Got an exception", exception);
     }
 
-    @Override
-    public Type getPayloadType(StompHeaders headers) {
-        return WebSocketResponse.class;
-    }
-
 
 
 
     private NodeJoiningMessage getNodeJoiningMessage () {
-        LOGGER.info("Construct node joining message....");
+        LOGGER.info("Construct noeud joining message....");
         NodeJoiningMessage nodeJoiningMessage = new NodeJoiningMessage();
         nodeJoiningMessage.setNoeud(noeud);
         nodeJoiningMessage.addConnectedNoeuds(nodesConnected);
-        LOGGER.info("Message ok, with node: " + noeud);
+        LOGGER.info("Message ok, with noeud: " + noeud);
         return nodeJoiningMessage;
     }
 

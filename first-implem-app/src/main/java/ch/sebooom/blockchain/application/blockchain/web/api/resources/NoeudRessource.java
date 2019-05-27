@@ -1,6 +1,8 @@
 package ch.sebooom.blockchain.application.blockchain.web.api.resources;
 
 import ch.sebooom.blockchain.domain.Noeud;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +18,19 @@ public class NoeudRessource {
         this.noeudId = noeud.getNodeId();
         this.host = noeud.getHost();
         this.port = noeud.getPort();
+    }
+
+    public String json()  {
+
+        ObjectMapper m = new ObjectMapper();
+
+        try {
+            return m.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
