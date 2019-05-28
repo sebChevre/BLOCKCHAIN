@@ -23,6 +23,7 @@ public class NoeudRessource {
     }
 
     public NoeudRessource(){}
+
     public String json()  {
 
         ObjectMapper m = new ObjectMapper();

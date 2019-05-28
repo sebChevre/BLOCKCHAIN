@@ -19,6 +19,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import java.security.Security;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by seb on .
@@ -44,8 +46,6 @@ public class Application {
 
 
 
-
-
     private final static Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
 
 
@@ -56,8 +56,11 @@ public class Application {
     }
 
 
-
-
+    @Bean
+    public List<String> portsToScans () {
+        return Arrays.asList("9090","9091","9092","9093","9094","9095",
+                "9096","9097","9098","9099");
+    }
 
     @Bean
     public StatusNoeud statusNoeud() {
@@ -71,18 +74,11 @@ public class Application {
          SpringApplication.run(Application.class);
     }
 
-    /**
-    @Scheduled(fixedDelay = 1000)
-    public void scheduleFixedDelayTask() {
-        System.out.println(
-                "Fixed delay task - " + System.currentTimeMillis() / 1000);
-    }
-    */
+
 
     @PostConstruct
     public void initApplication () {
 
-       // connectToNode();
 
         TransactionDomaineService transactionDomaineService = new TransactionDomaineService(blockChainRepository);
         BlockDomaineService blockDomaineService = new BlockDomaineService(transactionDomaineService);
