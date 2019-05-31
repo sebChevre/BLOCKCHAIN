@@ -1,7 +1,7 @@
 package ch.sebooom.blockchain.infrastructure.momorydb;
 
-import ch.sebooom.blockchain.domain.BlockChain;
-import ch.sebooom.blockchain.domain.PorteFeuille;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import java.util.List;
  * ${VERSION}
  */
 @Component
-public class DataSource {
+public class InMemoryDataSource {
 
-    private static final BlockChain blockChain = new BlockChain();
-    private static final List<PorteFeuille> portefeuilles = new ArrayList<>();
+    private  BlockChain blockChain = new BlockChain();
+    private  List<PorteFeuille> portefeuilles = new ArrayList<>();
 
     public  void addPortefeuille(PorteFeuille porteFeuille){
         portefeuilles.add(porteFeuille);

@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.domain.repository;
 
-import ch.sebooom.blockchain.domain.BlockChain;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
 
 /**
  * Created by seb on .

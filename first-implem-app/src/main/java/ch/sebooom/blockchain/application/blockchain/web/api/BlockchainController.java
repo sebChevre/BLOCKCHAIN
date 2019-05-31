@@ -1,8 +1,8 @@
 package ch.sebooom.blockchain.application.blockchain.web.api;
 
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.BlockChainRessource;
-import ch.sebooom.blockchain.application.service.BlockchainService;
-import ch.sebooom.blockchain.domain.BlockChain;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
+import ch.sebooom.blockchain.domain.service.BlockChainDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlockchainController {
 
     @Autowired
-    BlockchainService blockchainService;
+    BlockChainDomainService blockChainDomainService;
 
     @GetMapping
     public ResponseEntity<BlockChainRessource> getBlockchain () {
 
-        BlockChain blockChain = blockchainService.getBlockChain();
+        BlockChain blockChain = blockChainDomainService.getBlockChain();
 
         return ResponseEntity.ok(BlockChainRessource.from(blockChain));
 

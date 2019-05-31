@@ -1,5 +1,6 @@
-package ch.sebooom.blockchain.domain;
+package ch.sebooom.blockchain.domain.blockchain;
 
+import ch.sebooom.blockchain.domain.transaction.Transaction;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public class Block {
     private final static Logger LOGGER = LoggerFactory.getLogger(Block.class.getName());
 
     private int blockNumber;
-    private static final int DEFAULT_MINING_DIFFICULTY = 5;
+    private static final int DEFAULT_MINING_DIFFICULTY = 1;
     private static final String GENESIS_HASH_PRECEDENT = "0";
     public String hash; //le hash du bloc, la signature
     public String hashPrecedent; //le hash du bloc précédent

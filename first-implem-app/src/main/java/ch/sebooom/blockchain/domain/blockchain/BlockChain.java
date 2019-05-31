@@ -1,6 +1,7 @@
-package ch.sebooom.blockchain.domain;
+package ch.sebooom.blockchain.domain.blockchain;
 
 
+import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
 import com.google.common.collect.Iterables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class BlockChain {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(BlockChain.class.getName());
     public  List<Block> blockChain = new ArrayList<>();
-    public Map<String,TransactionOutput> UTXOs = new HashMap<>(); //list of all unspent transactions.
+    public Map<String, TransactionOutput> UTXOs = new HashMap<>(); //list of all unspent transactions.
     public static float  minimumTransaction = 1.0f;
 
 

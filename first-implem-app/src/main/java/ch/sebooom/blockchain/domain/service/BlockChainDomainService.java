@@ -1,23 +1,42 @@
 package ch.sebooom.blockchain.domain.service;
 
+import ch.sebooom.blockchain.domain.blockchain.Block;
 import ch.sebooom.blockchain.domain.blockchain.BlockChain;
+import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
 import ch.sebooom.blockchain.domain.transaction.Transaction;
 import ch.sebooom.blockchain.domain.transaction.TransactionInput;
 import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
-import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
+import org.springframework.stereotype.Service;
 
-/**
- * Created by seb on .
- * <p>
- * ${VERSION}
- */
-public class TransactionDomaineService {
+@Service
+public class BlockChainDomainService {
 
     private BlockChainRepository blockChainRepository;
 
-    public TransactionDomaineService(BlockChainRepository blockChainRepository){
+    public BlockChainDomainService(BlockChainRepository blockChainRepository) {
         this.blockChainRepository = blockChainRepository;
+    }
+
+    public BlockChain getBlockChain() {
+
+        return blockChainRepository.getBlockChain();
+    }
+
+    //Add transactions to this block
+    public boolean addTransactionToBlock(Transaction transaction, Block block) {
+        //process transaction and check if valid, unless block is genesis block then ignore.
+        if(transaction == null) return false;
+
+        if((block.hashPrecedent != "0")) {
+            if((processTransaction(transaction) != true)) {
+                System.out.println("Transaction failed to process. Discarded.");
+                return false;
+            }
+        }
+        block.transactions.add(transaction);
+        System.out.println("Transaction Successfully added to Block");
+        return true;
     }
 
     //Returns true if new transaction could be created.
@@ -64,5 +83,4 @@ public class TransactionDomaineService {
         String data = CryptoUtil.getStringFromKey(transaction.expediteur) + CryptoUtil.getStringFromKey(transaction.destinataire) + Float.toString(transaction.value)	;
         return CryptoUtil.checkECDSASignature(transaction.expediteur, data, transaction.signature);
     }
-
 }

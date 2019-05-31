@@ -1,4 +1,4 @@
-package ch.sebooom.blockchain.domain;
+package ch.sebooom.blockchain.domain.transaction;
 
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;

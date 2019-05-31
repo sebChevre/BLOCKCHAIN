@@ -1,5 +1,7 @@
-package ch.sebooom.blockchain.domain;
+package ch.sebooom.blockchain.domain.noeuds;
 
+import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
+import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 
 import java.security.KeyPair;
@@ -13,15 +15,40 @@ public class PorteFeuille {
 
     public PrivateKey clePrive;
     public PublicKey clePublique;
+    public String clePubliqueStr;
     public String adresse;
+    public boolean isDistant = Boolean.FALSE;
+    public boolean isBasePortefeuille = Boolean.FALSE;
+    public String description;
 
 
-    public Map<String,TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+    public Map<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 
+    private PorteFeuille () {}
 
-    public PorteFeuille(){
-        genererCles();
-        this.adresse = UUID.randomUUID().toString();
+    public static PorteFeuille creerPortefeuilleBase(){
+        PorteFeuille porteFeuille = new PorteFeuille();
+        porteFeuille.genererCles();
+        porteFeuille.adresse =  UUID.randomUUID().toString();
+        porteFeuille.isBasePortefeuille = Boolean.TRUE;
+        porteFeuille.description = "Portefuille base";
+        return porteFeuille;
+    }
+
+    public static PorteFeuille creerPortefeuille(String description){
+        PorteFeuille porteFeuille = new PorteFeuille();
+        porteFeuille.genererCles();
+        porteFeuille.adresse =  UUID.randomUUID().toString();
+        porteFeuille.description = description;
+        return porteFeuille;
+    }
+
+    public static PorteFeuille creerPortefeuilleDistant(String clePublique, String adresse){
+        PorteFeuille porteFeuille = new PorteFeuille();
+        porteFeuille.adresse = adresse;
+        porteFeuille.clePubliqueStr = clePublique;
+        porteFeuille.isDistant = Boolean.TRUE;
+        return porteFeuille;
     }
 
     public void genererCles() {
@@ -30,8 +57,6 @@ public class PorteFeuille {
             // On défini les cles proves et publiques
             clePrive = keyPair.getPrivate();
             clePublique = keyPair.getPublic();
-
-
 
         }catch(Exception e) {
             throw new RuntimeException(e);

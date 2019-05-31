@@ -1,9 +1,14 @@
 package ch.sebooom.blockchain.domain;
 
+import ch.sebooom.blockchain.domain.blockchain.Block;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
 import ch.sebooom.blockchain.domain.service.BlockDomaineService;
 import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
 import ch.sebooom.blockchain.domain.service.TransactionDomaineService;
+import ch.sebooom.blockchain.domain.transaction.Transaction;
+import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
@@ -186,6 +191,7 @@ public class BlockChainTest {
         assertFalse(blockchain.isChainValid());
     }
 
+    /**
     @Ignore
     @Test
     public void testGlobal () {
@@ -267,6 +273,6 @@ public class BlockChainTest {
 
         System.out.println("BlockChain:" + blockChainAsJson(bc));
     }
-
+*/
 
 }

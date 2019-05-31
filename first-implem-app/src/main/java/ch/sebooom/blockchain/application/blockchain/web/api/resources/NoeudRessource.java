@@ -1,6 +1,7 @@
 package ch.sebooom.blockchain.application.blockchain.web.api.resources;
 
-import ch.sebooom.blockchain.domain.Noeud;
+import ch.sebooom.blockchain.domain.noeuds.Noeud;
+import ch.sebooom.blockchain.domain.noeuds.NoeudDistant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -12,15 +13,19 @@ import lombok.ToString;
 @ToString
 public class NoeudRessource {
 
-    private String nodeId;
-    private String host;
-    private String port;
+    private String noeudId;
+    private String hote;
+    private int port;
+    private PortefeuilleRessource portefeuille;
 
-    public NoeudRessource(Noeud noeud){
-        this.nodeId = noeud.getNodeId();
-        this.host = noeud.getHost();
-        this.port = noeud.getPort();
+    public NoeudRessource(Noeud noeud, float balance){
+        this.noeudId = noeud.identifiant();
+        this.hote = noeud.hote();
+        this.port = noeud.port();
+        this.portefeuille = new PortefeuilleRessource(noeud.porteFeuille(),balance);
     }
+
+
 
     public NoeudRessource(){}
 

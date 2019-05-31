@@ -65,3 +65,13 @@ body {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.portefeuile-desc{
+  float: right;
+  font-size: small;
+  font-style: italic;
+}
+
+.portefeuille-list-adress{
+  font-weight: bold;
+}

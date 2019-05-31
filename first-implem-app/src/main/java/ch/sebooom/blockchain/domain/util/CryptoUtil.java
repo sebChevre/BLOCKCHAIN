@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.domain.util;
 
-import ch.sebooom.blockchain.domain.Transaction;
+import ch.sebooom.blockchain.domain.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

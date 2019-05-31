@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.application.blockchain.web.api.resources;
 
-import ch.sebooom.blockchain.domain.StatusNoeud;
+import ch.sebooom.blockchain.domain.noeuds.Noeud;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,13 +19,14 @@ public class NoeudsConnectesStatusRessource {
 
     public NoeudsConnectesStatusRessource(){}
 
-    public NoeudsConnectesStatusRessource(StatusNoeud statusNoeud){
-        List<NoeudRessource> noeudRessources = statusNoeud.noeudsConnectes.stream().map(noeud -> {
-            return new NoeudRessource(noeud);
+    public NoeudsConnectesStatusRessource(Noeud noeud, float balance){
+        List<NoeudRessource> noeudRessources = noeud.noeudsConnectes().stream().map(noeudConnecte -> {
+
+            return new NoeudRessource(noeud, balance);
         }).collect(Collectors.toList());
 
         this.noeudRessources = noeudRessources;
-        this.noeudOrigine = new NoeudRessource(statusNoeud.noeud);
+        this.noeudOrigine = new NoeudRessource(noeud,balance);
     }
 
 }

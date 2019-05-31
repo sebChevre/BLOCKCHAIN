@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.application.blockchain.web.api.resources;
 
-import ch.sebooom.blockchain.domain.TransactionInput;
+import ch.sebooom.blockchain.domain.transaction.TransactionInput;
 import lombok.Getter;
 
 /**

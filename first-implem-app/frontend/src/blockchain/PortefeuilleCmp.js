@@ -112,12 +112,23 @@ class PortefeuilleCmp extends Component {
        // const portefeuille = this.props.portefeuille;
         const portefeuilles = this.props.portefeuilles;
 
-        console.log(this.state.portefeuille)
+        console.log(this.state.portefeuille);
+        const isBase = this.state.portefeuille.basePortefeuille;
+        let baseBadge;
+
+        if(isBase){
+            baseBadge = <span className="badge badge-danger badge-pill">BASE</span>;
+        }else{
+            baseBadge = <span className="badge badge-primary badge-pill">PRINCIPAL</span>;
+        }
 
         return (
             <div className="card block">
                 <div className="card-header" onClick={this.click}>
+                    {baseBadge}
                     <span className="blocknumber">Portefeuille : {this.state.portefeuille.adresse}</span>
+                    <span className="portefeuile-desc">{this.state.portefeuille.description}</span>
+
                 </div>
                 <div className={this.state.show ? "card-body" : "hidden"}>
                     <h1>

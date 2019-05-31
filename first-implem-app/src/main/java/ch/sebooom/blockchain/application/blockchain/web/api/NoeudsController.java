@@ -1,7 +1,12 @@
 package ch.sebooom.blockchain.application.blockchain.web.api;
 
+import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudDistantRessource;
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudRessource;
-import ch.sebooom.blockchain.domain.StatusNoeud;
+import ch.sebooom.blockchain.domain.noeuds.Noeud;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.service.NoeudDomaineService;
+import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +19,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/noeuds")
+@RequestMapping("/noeud")
 public class NoeudsController {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(NoeudsController.class.getName());
 
     @Autowired
-    StatusNoeud statusNoeud;
+    NoeudDomaineService noeudDomaineService;
+    @Autowired
+    PortefeuilleDomaineService portefeuilleDomaineService;
 
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(NoeudsController.class.getName());
     @GetMapping
     public ResponseEntity<NoeudRessource> getNoeudInfo(){
-        return ResponseEntity.ok(new NoeudRessource(statusNoeud.noeud));
+        Noeud noeud = noeudDomaineService.getNoeud();
+
+        float balance = portefeuilleDomaineService.getBalanceForPortefeuille(noeud.porteFeuille());
+
+        return ResponseEntity.ok(new NoeudRessource(noeud,balance));
     }
 
     @GetMapping("/connected")
-    public ResponseEntity<List<NoeudRessource>> getConnectedNodes () {
+    public ResponseEntity<List<NoeudDistantRessource>> getConnectedNodes () {
+        Noeud noeud = noeudDomaineService.getNoeud();
 
-        LOGGER.info("NodesConnected: {}", statusNoeud);
+        LOGGER.info("NodesConnected: {}", noeud);
 
-        return ResponseEntity.ok(statusNoeud.noeudsConnectes().stream().map(node -> {
-            return new NoeudRessource(node);
+
+        return ResponseEntity.ok(noeud.noeudsConnectes().stream().map(node -> {
+
+            return new NoeudDistantRessource(node);
         }).collect(Collectors.toList()));
 
 

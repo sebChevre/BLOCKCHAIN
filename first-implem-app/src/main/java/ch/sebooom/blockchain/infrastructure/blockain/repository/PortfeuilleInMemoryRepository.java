@@ -1,8 +1,8 @@
 package ch.sebooom.blockchain.infrastructure.blockain.repository;
 
-import ch.sebooom.blockchain.domain.PorteFeuille;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
-import ch.sebooom.blockchain.infrastructure.momorydb.DataSource;
+import ch.sebooom.blockchain.infrastructure.momorydb.InMemoryDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,19 +18,19 @@ import java.util.Optional;
 public class PortfeuilleInMemoryRepository implements PortefeuilleRepository {
 
     @Autowired
-    DataSource dataSource;
+    InMemoryDataSource inMemoryDataSource;
 
 
 
     @Override
     public List<PorteFeuille> getAllPortefeuille() {
-        return dataSource.getAllPortefeuille();
+        return inMemoryDataSource.getAllPortefeuille();
     }
 
     @Override
     public Optional<PorteFeuille> getPortefeuilleByAdresse (String adresse) {
 
-        Optional<PorteFeuille> porteFeuilleOptional = dataSource.getAllPortefeuille().stream().filter(porteFeuille -> {
+        Optional<PorteFeuille> porteFeuilleOptional = inMemoryDataSource.getAllPortefeuille().stream().filter(porteFeuille -> {
             return porteFeuille.adresse.equals(adresse);
         }).findFirst();
 
@@ -39,6 +39,6 @@ public class PortfeuilleInMemoryRepository implements PortefeuilleRepository {
 
     @Override
     public void savePortefeuille(PorteFeuille porteFeuille) {
-        dataSource.addPortefeuille(porteFeuille);
+        inMemoryDataSource.addPortefeuille(porteFeuille);
     }
 }

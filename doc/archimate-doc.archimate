@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="blockchain" id="77a9f1bb-ac88-4c07-9e92-27d47591723c" version="4.0.1">
+  <folder name="Strategy" id="51c290a1-c72a-4ee3-9542-a073a966762a" type="strategy"/>
+  <folder name="Business" id="a9b69aa1-826d-46a8-9f3c-1c5a610ab018" type="business"/>
+  <folder name="Application" id="1d00a8a9-09d5-42f6-9f1c-c26ed87993b3" type="application">
+    <element xsi:type="archimate:ApplicationService" name="BlockChainDomainService" id="56435854-efdc-416e-8ced-8f75b6b7b95d"/>
+    <element xsi:type="archimate:DataObject" name="BlockChain" id="7ce76fad-6552-4156-9c21-cf1aaa8bdd64"/>
+    <element xsi:type="archimate:DataObject" name="Block" id="81d37e8b-db8b-475d-a6d9-323aa97331ba"/>
+    <element xsi:type="archimate:DataObject" name="Transaction" id="c180d9fa-3252-4e5e-8e5a-3e4b3cd09a38"/>
+    <element xsi:type="archimate:ApplicationService" name="TransactionDomainService" id="24784366-16af-4e13-8035-3e4888c6148a"/>
+    <element xsi:type="archimate:ApplicationInterface" name="BlockChainRepository" id="9555945a-6964-4d7e-9602-939d10f883c8"/>
+    <element xsi:type="archimate:ApplicationService" name="PortefeuilleDomainService" id="5dee71b6-1295-402e-a3de-59835280e3ed"/>
+  </folder>
+  <folder name="Technology &amp; Physical" id="dba5eaea-badc-4b46-b9f1-706d489aeacd" type="technology"/>
+  <folder name="Motivation" id="fbb9d63b-18cb-4652-b89d-54fc20a0eb51" type="motivation"/>
+  <folder name="Implementation &amp; Migration" id="1debae4c-85d9-481a-821f-99540575c6dc" type="implementation_migration"/>
+  <folder name="Other" id="8dba1d63-d89e-4004-8a19-96b5631882fb" type="other"/>
+  <folder name="Relations" id="180e442b-c86c-4a7a-b630-63778f46ecad" type="relations"/>
+  <folder name="Views" id="73cd3788-434b-4433-b45e-fedb633a8ada" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Default View" id="1414abd8-9245-4da4-9fc1-f0dc63c4d2e6">
+      <child xsi:type="archimate:DiagramObject" id="09fec5a3-5e09-437c-9375-ca1d0c2e028b" archimateElement="56435854-efdc-416e-8ced-8f75b6b7b95d">
+        <bounds x="271" y="288" width="186" height="37"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="6490a32a-9572-4d5f-bb95-d36faa5b43d1" archimateElement="7ce76fad-6552-4156-9c21-cf1aaa8bdd64">
+        <bounds x="672" y="384" width="120" height="30"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="12ce0ca6-5101-46bc-807b-1d469765e18b" archimateElement="81d37e8b-db8b-475d-a6d9-323aa97331ba">
+        <bounds x="660" y="433" width="120" height="30"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="7c1b1351-ca2c-43a6-b9c9-039892914a17" archimateElement="c180d9fa-3252-4e5e-8e5a-3e4b3cd09a38">
+        <bounds x="660" y="480" width="120" height="30"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="f14aa26d-2642-4a47-857c-1743bbe0bbb4" archimateElement="24784366-16af-4e13-8035-3e4888c6148a">
+        <bounds x="96" y="380" width="186" height="37"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="78bf7ca8-0e03-4c9d-ad27-969159c28b73" archimateElement="9555945a-6964-4d7e-9602-939d10f883c8">
+        <bounds x="348" y="383" width="190" height="31"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="a6e84246-ab2c-4287-8693-16ca33732841" archimateElement="5dee71b6-1295-402e-a3de-59835280e3ed">
+        <bounds x="487" y="288" width="186" height="37"/>
+      </child>
+    </element>
+  </folder>
+</archimate:model>

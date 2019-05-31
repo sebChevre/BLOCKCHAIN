@@ -1,7 +1,7 @@
 package ch.sebooom.blockchain.domain.service;
 
-import ch.sebooom.blockchain.domain.Block;
-import ch.sebooom.blockchain.domain.Transaction;
+import ch.sebooom.blockchain.domain.blockchain.Block;
+import ch.sebooom.blockchain.domain.transaction.Transaction;
 
 /**
  * Created by seb on .

@@ -1,8 +1,8 @@
 package ch.sebooom.blockchain.infrastructure.blockain.repository;
 
-import ch.sebooom.blockchain.domain.BlockChain;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
 import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
-import ch.sebooom.blockchain.infrastructure.momorydb.DataSource;
+import ch.sebooom.blockchain.infrastructure.momorydb.InMemoryDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Repository;
 public class BlockChainInMemoryRepository implements BlockChainRepository {
 
     @Autowired
-    DataSource dataSource;
+    InMemoryDataSource inMemoryDataSource;
 
     @Override
     public BlockChain getBlockChain() {
-        return dataSource.getBlockChain();
+        return inMemoryDataSource.getBlockChain();
     }
 
 

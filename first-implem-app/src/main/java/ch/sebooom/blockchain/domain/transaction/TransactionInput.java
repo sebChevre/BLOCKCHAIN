@@ -1,4 +1,4 @@
-package ch.sebooom.blockchain.domain;
+package ch.sebooom.blockchain.domain.transaction;
 
 public class TransactionInput {
 

@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.infrastructure.blockain.json;
 
-import ch.sebooom.blockchain.domain.BlockChain;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;

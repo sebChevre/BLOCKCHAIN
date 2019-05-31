@@ -1,5 +1,7 @@
 package ch.sebooom.blockchain.domain;
 
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.transaction.Transaction;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.junit.Test;
 
@@ -15,8 +17,8 @@ public class PorteFeuilleTest {
         //Setup Bouncey castle as a Security Provider
        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
-       PorteFeuille ptf1 = new PorteFeuille();
-       PorteFeuille ptf2 = new PorteFeuille();
+       PorteFeuille ptf1 = PorteFeuille.creerPortefeuille("1");
+       PorteFeuille ptf2 = PorteFeuille.creerPortefeuille("2");
 
         System.out.println("Key pair - Private : " + CryptoUtil.getStringFromKey(ptf1.clePrive) +
                 ", publique: " + CryptoUtil.getStringFromKey(ptf1.clePublique));

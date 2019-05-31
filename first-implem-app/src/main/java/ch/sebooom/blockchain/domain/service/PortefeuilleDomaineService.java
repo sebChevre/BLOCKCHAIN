@@ -1,31 +1,36 @@
 package ch.sebooom.blockchain.domain.service;
 
-import ch.sebooom.blockchain.domain.PorteFeuille;
-import ch.sebooom.blockchain.domain.Transaction;
-import ch.sebooom.blockchain.domain.TransactionInput;
-import ch.sebooom.blockchain.domain.TransactionOutput;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.transaction.Transaction;
+import ch.sebooom.blockchain.domain.transaction.TransactionInput;
+import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
+import ch.sebooom.blockchain.domain.exception.PortefeuilleNonExistantException;
 import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
+import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by seb on .
  * <p>
  * ${VERSION}
  */
+@Service
 public class PortefeuilleDomaineService {
 
 
+
+    PortefeuilleRepository portefeuilleRepository;
+
     BlockChainRepository blockChainRepository;
 
-    public PortefeuilleDomaineService(BlockChainRepository blockChainRepository){
+    public PortefeuilleDomaineService(PortefeuilleRepository portefeuilleRepository, BlockChainRepository blockChainRepository ){
+        this.portefeuilleRepository = portefeuilleRepository;
         this.blockChainRepository = blockChainRepository;
     }
-
 
 
     public float getBalanceForPortefeuille(PorteFeuille portefeuille){
@@ -68,5 +73,46 @@ public class PortefeuilleDomaineService {
             expediteur.UTXOs.remove(input.transactionOutputId);
         }
         return newTransaction;
+    }
+
+
+    public Map<PorteFeuille,Float> getAllPortFeuilleWithBalance(){
+
+        Map<PorteFeuille,Float> portefeuilleWithBalance = new HashMap<>();
+
+        List<PorteFeuille> porteFeuilleList = portefeuilleRepository.getAllPortefeuille();;
+
+        porteFeuilleList.forEach(porteFeuille -> {
+            portefeuilleWithBalance.put(porteFeuille,getBalanceForPortefeuille(porteFeuille));
+        });
+        return portefeuilleWithBalance;
+
+    }
+
+
+    public PorteFeuille createPortefeuille(String description) {
+        PorteFeuille newPortefeuille = PorteFeuille.creerPortefeuille(description);
+        portefeuilleRepository.savePortefeuille(newPortefeuille);
+        return newPortefeuille;
+
+    }
+
+
+    public ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse){
+
+        PorteFeuille porteFeuille = portefeuilleRepository.getPortefeuilleByAdresse(adresse).orElseThrow(() ->
+                new PortefeuilleNonExistantException(adresse)
+        );
+
+        float balance = getBalanceForPortefeuille(porteFeuille);
+
+        ImmutablePair<PorteFeuille,Float> portefeuilleWithBalance = new ImmutablePair<>(porteFeuille,balance);
+
+        return portefeuilleWithBalance;
+    }
+
+
+    public void savePortefeuille(PorteFeuille portefeuille){
+        portefeuilleRepository.savePortefeuille(portefeuille);
     }
 }

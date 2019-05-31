@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.domain.repository;
 
-import ch.sebooom.blockchain.domain.PorteFeuille;
+import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 
 import java.util.List;
 import java.util.Optional;

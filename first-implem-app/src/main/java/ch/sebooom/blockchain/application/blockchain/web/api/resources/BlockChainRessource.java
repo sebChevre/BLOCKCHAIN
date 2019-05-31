@@ -1,6 +1,6 @@
 package ch.sebooom.blockchain.application.blockchain.web.api.resources;
 
-import ch.sebooom.blockchain.domain.BlockChain;
+import ch.sebooom.blockchain.domain.blockchain.BlockChain;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package ch.sebooom.blockchain.domain;
 
+import ch.sebooom.blockchain.domain.blockchain.Block;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -4,15 +4,13 @@ import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import lombok.Getter;
 
-import java.security.PublicKey;
-
 /**
  * Created by seb on .
  * <p>
  * ${VERSION}
  */
 @Getter
-public class PortefeuilleRessource {
+public class PortefeuilleDistantRessource {
 
     private String clePublique;
     private float balance;
@@ -20,13 +18,12 @@ public class PortefeuilleRessource {
     private boolean isBasePortefeuille;
     private String description;
 
-    public PortefeuilleRessource () {}
+    public PortefeuilleDistantRessource() {}
 
-    public PortefeuilleRessource(PorteFeuille porteFeuille, float balance) {
+    public PortefeuilleDistantRessource(PorteFeuille porteFeuille) {
 
         this.adresse = porteFeuille.adresse;
-        this.balance = balance;
-        this.clePublique = CryptoUtil.getStringFromKey(porteFeuille.clePublique);
+        this.clePublique = porteFeuille.clePubliqueStr;
         this.isBasePortefeuille = porteFeuille.isBasePortefeuille;
         this.description =  porteFeuille.description;
 
