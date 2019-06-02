@@ -4,8 +4,6 @@ import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import lombok.Getter;
 
-import java.security.PublicKey;
-
 /**
  * Created by seb on .
  * <p>

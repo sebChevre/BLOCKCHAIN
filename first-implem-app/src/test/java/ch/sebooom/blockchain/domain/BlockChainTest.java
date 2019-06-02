@@ -209,18 +209,18 @@ public class BlockChainTest {
         //Création des portefeuilles
         PorteFeuille walletA = new PorteFeuille();
         LOGGER.info("***** Portefeuille créé *****");
-        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(walletA.clePublique));
+        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(walletA.clePubliquePortefuille));
 
         PorteFeuille walletB = new PorteFeuille();
         LOGGER.info("***** Portefeuille créé *****");
-        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(walletB.clePublique));
+        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(walletB.clePubliquePortefuille));
 
         PorteFeuille coinbase = new PorteFeuille();
         LOGGER.info("***** Portefeuille créé *****");
-        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(coinbase.clePublique));
+        LOGGER.info("Clé publique, {}",CryptoUtil.getStringFromKey(coinbase.clePubliquePortefuille));
 
         //Genesis transaction, on envoie 100 NoobCoin au walletA:
-        Transaction genesisTransaction = new Transaction(coinbase.clePublique, walletA.clePublique, 100f);
+        Transaction genesisTransaction = new Transaction(coinbase.clePubliquePortefuille, walletA.clePubliquePortefuille, 100f);
         genesisTransaction.generateSignature(coinbase.clePrive);	 //manually sign the genesis transaction
         genesisTransaction.transactionId = "0"; //manually set the transaction id
         genesisTransaction.outputs.add(new TransactionOutput(genesisTransaction.destinataire, genesisTransaction.value, genesisTransaction.transactionId)); //manually add the Transactions Output
@@ -240,8 +240,8 @@ public class BlockChainTest {
         Block block1 = new Block(genesis.hash,1);
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("\nWalletA is Attempting to send funds (40) to WalletB...");
-        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 40f),block1);
-        //block1.addTransaction(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 40f));
+        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePubliquePortefuille, 40f),block1);
+        //block1.addTransaction(portefeuilleDomaineService.sendFunds(walletA,walletB.clePubliquePortefuille, 40f));
         bc.addBlock(block1);
         LOGGER.info("Block1 added block added: " + blockChainAsJson(bc));
 
@@ -250,8 +250,8 @@ public class BlockChainTest {
 
         Block block2 = new Block(block1.hash,2);
         LOGGER.info("\nWalletA Attempting to send more funds (1000) than it has...");
-        //block2.addTransaction(walletA.sendFunds(walletA,walletB.clePublique, 1000f));
-        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 1000f),block2);
+        //block2.addTransaction(walletA.sendFunds(walletA,walletB.clePubliquePortefuille, 1000f));
+        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePubliquePortefuille, 1000f),block2);
 
         bc.addBlock(block2);
         LOGGER.info("Block2 added block added: " + blockChainAsJson(bc));
@@ -262,8 +262,8 @@ public class BlockChainTest {
 
         Block block3 = new Block(block2.hash,3);
         LOGGER.info("\nWalletB is Attempting to send funds (20) to WalletA...");
-        //block3.addTransaction(walletB.sendFunds( walletA.clePublique, 20));
-        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletB,walletA.clePublique, 20),block3);
+        //block3.addTransaction(walletB.sendFunds( walletA.clePubliquePortefuille, 20));
+        blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletB,walletA.clePubliquePortefuille, 20),block3);
 
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("WalletB's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletB));

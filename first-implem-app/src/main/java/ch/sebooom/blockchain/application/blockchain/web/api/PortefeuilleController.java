@@ -47,7 +47,7 @@ public class PortefeuilleController {
 
         ImmutablePair<PorteFeuille,Float> porteFeuilleByAdresse = portefeuilleDomaineService.getPortefeuilleByAdresse(adresse);
 
-        return ResponseEntity.ok(new PortefeuilleRessource(porteFeuilleByAdresse.left, porteFeuilleByAdresse.right));
+        return ResponseEntity.ok(new PortefeuilleRessource(porteFeuilleByAdresse.left,porteFeuilleByAdresse.right));
 
     }
 
@@ -55,8 +55,8 @@ public class PortefeuilleController {
     public ResponseEntity<PortefeuilleRessource> createPortefeuille () {
 
         PorteFeuille porteFeuille = portefeuilleDomaineService.createPortefeuille("POST REQUEST");
-
+        float balance = portefeuilleDomaineService.getBalanceForPortefeuille(porteFeuille);
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new PortefeuilleRessource(porteFeuille,0f));
+                new PortefeuilleRessource(porteFeuille,balance));
     }
 }

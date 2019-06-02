@@ -11,16 +11,23 @@ import lombok.ToString;
 public class NoeudDistantRessource {
 
 
-    private String noeudId;
+    /* Informations du noeud  */
+    private String identifiant;
     private String hote;
     private int port;
-    private PortefeuilleDistantRessource portefeuille;
+    /* information du portefeuille lié */
+    private String clePubliquePortefuille;
+    private String adressePortefeuille;
+    private String descriptionPortefeuille;
 
-    public NoeudDistantRessource (NoeudDistant noeud){
-        this.noeudId = noeud.identifiant();
-        this.hote = noeud.hote();
-        this.port = noeud.port();
-        this.portefeuille = new PortefeuilleDistantRessource(noeud.porteFeuille);
+    public NoeudDistantRessource (NoeudDistant noeudDistant){
+        this.identifiant = noeudDistant.identifiant();
+        this.hote = noeudDistant.hote();
+        this.port = noeudDistant.port();
+
+        this.clePubliquePortefuille = noeudDistant.clePubliquePortefuille();
+        this.adressePortefeuille = noeudDistant.adressePortefeuille();
+        this.descriptionPortefeuille = noeudDistant.descriptionPortefeuille();
 
     }
 

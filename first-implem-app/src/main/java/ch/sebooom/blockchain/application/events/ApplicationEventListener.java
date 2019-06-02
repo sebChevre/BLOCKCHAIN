@@ -1,14 +1,16 @@
 package ch.sebooom.blockchain.application.events;
 
-import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudRessource;
-import ch.sebooom.blockchain.application.blockchain.web.api.resources.NoeudsConnectesStatusRessource;
+import ch.sebooom.blockchain.application.blockchain.web.api.command.JoinNoeudDistantCommand;
+import ch.sebooom.blockchain.application.blockchain.web.api.resources.JoinNoeudDistantReponseRessource;
 import ch.sebooom.blockchain.domain.blockchain.Block;
+import ch.sebooom.blockchain.domain.noeuds.Noeud;
 import ch.sebooom.blockchain.domain.noeuds.NoeudDistant;
 import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
-import ch.sebooom.blockchain.domain.service.*;
+import ch.sebooom.blockchain.domain.service.BlockChainDomainService;
+import ch.sebooom.blockchain.domain.service.NoeudDomaineService;
+import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
 import ch.sebooom.blockchain.domain.transaction.Transaction;
 import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
-import ch.sebooom.blockchain.domain.noeuds.Noeud;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
@@ -44,10 +46,6 @@ public class ApplicationEventListener {
     @Autowired
     ObjectMapper mapper;
 
-
-
-
-
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationready(){
 
@@ -66,7 +64,7 @@ public class ApplicationEventListener {
         Noeud noeud = Noeud.initNoeud(port);
         noeudDomaineService.creerNoeud(noeud);
 
-        LOGGER.info("Noeud configuration done. {}", noeudDomaineService.getNoeud());
+        LOGGER.info("> Noeud configuration done. {}", noeudDomaineService.getNoeud());
     }
 
     /**
@@ -81,7 +79,7 @@ public class ApplicationEventListener {
 
         //iteration sur la liste des noeuds a trouver pour la connection initiale
         portsToScan.stream()
-                .filter(noeudPort ->{
+                .filter(noeudPort -> {
 
                     LOGGER.info("> Port a connecter:{}",noeudPort);
                     LOGGER.info("> Port actuel :{}", noeud);
@@ -90,17 +88,13 @@ public class ApplicationEventListener {
                 }).forEach(noeudPort -> {
 
                     connectToNoeudsConnecteEndpoint(noeudPort,client);
-        });
+                });
 
     }
 
     private void initPortefeuille(){
 
         Noeud noeud = noeudDomaineService.getNoeud();
-        //TransactionDomaineService transactionDomaineService = new TransactionDomaineService(blockChainRepository);
-        //BlockDomaineService blockDomaineService = new BlockDomaineService(transactionDomaineService);
-        //PortefeuilleDomaineService portefeuilleDomaineService = new PortefeuilleDomaineService(portefeuilleRepository, blockChainRepository);
-        //BlockChainDomainService blockChainDomainService = new BlockChainDomainService(blockChainRepository);
 
         LOGGER.info("> Starting application init...");
         LOGGER.info("> Blockchain generated auto with datasource!");
@@ -149,38 +143,32 @@ public class ApplicationEventListener {
     private void connectToNoeudsConnecteEndpoint (String nodePort, OkHttpClient client) {
 
         String url = String.format(URL_BASE,nodePort);
-
         Noeud noeud = noeudDomaineService.getNoeud();
         LOGGER.info("> Connection sur port: {}, noeud actif node: {}", noeud);
-        //on passe le noeud
-        float balance
-                = portefeuilleDomaineService.getBalanceForPortefeuille(noeud.porteFeuille());
 
-        NoeudRessource noeudRessource = new NoeudRessource(noeud,balance);
+        JoinNoeudDistantCommand joinNoeudDistantCommand = new JoinNoeudDistantCommand();
+        joinNoeudDistantCommand.fromNoeud(noeud);
 
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), noeudRessource.json());
+        RequestBody body
+                = RequestBody.create(joinNoeudDistantCommand.json(),MediaType.parse("application/json; charset=utf-8"));
+
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
 
+        //Envoi de la commande au poont d'entrée /join et traietement de la réponse
         try (Response response = client.newCall(request).execute()) {
-
+            //récupération corps réponse
             String jsonBodyResponse = response.body().string();
+            LOGGER.info("> Response body:{}",jsonBodyResponse);
+            //Déserialisation
+            JoinNoeudDistantReponseRessource joinNoeudDistantReponseRessource = mapper.readValue(jsonBodyResponse, JoinNoeudDistantReponseRessource.class);
+            LOGGER.info("> Nodes from peer: {}",joinNoeudDistantReponseRessource);
 
-            LOGGER.info("Response body:{}",jsonBodyResponse);
-
-            NoeudsConnectesStatusRessource nodesFromPeer = mapper.readValue(jsonBodyResponse, NoeudsConnectesStatusRessource.class);
-
-            LOGGER.info("Nodes from peer: {}",nodesFromPeer);
-
-            nodesFromPeer.getNoeudRessources().forEach(noeudRess -> {
-
-                noeud.ajouNoeudDistant(NoeudDistant.from(noeudRess.getNoeudId(),noeudRess.getPort(), noeudRess.getPortefeuille()));
-            });
-
-            NoeudDistant noeudOrigine = NoeudDistant.from(nodesFromPeer.getNoeudOrigine().getNoeudId(),nodesFromPeer.getNoeudOrigine().getPort(), nodesFromPeer.getNoeudOrigine().getPortefeuille());
+            NoeudDistant noeudOrigine = joinNoeudDistantReponseRessource.toNoeudDistant();
+            //ajout du noeud origine
             noeud.ajouNoeudDistant(noeudOrigine);
 
         }catch(IOException e){

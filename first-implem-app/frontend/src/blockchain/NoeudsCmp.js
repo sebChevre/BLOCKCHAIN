@@ -14,7 +14,7 @@ class NoeudsCmp extends Component {
     }
 
 
-    componentDidMount() {
+    componentWillMount() {
         this.loadDetailNoeud();
         this.loadConnectedNoeuds();
     }
@@ -47,12 +47,7 @@ class NoeudsCmp extends Component {
     render () {
 
 
-        console.log(JSON.stringify(this.state.noeud.portefeuille));
-        let p = JSON.stringify(this.state.noeud.portefeuille);
-       // var p = JSON.parse(JSON.stringify(this.state.noeud.portefeuille))
-
-
-        let kp = ""+this.state.noeud.portefeuille;
+        let clePublique = (this.state.noeud.portefeuille ? this.state.noeud.portefeuille.clePublique : '');
 
         return (
             <div>
@@ -61,7 +56,7 @@ class NoeudsCmp extends Component {
                 <div className="jumbotron">
                     <h3 className="display-4">{this.state.noeud.noeudId}</h3>
                     <p className="lead">Adresse: {this.state.noeud.hote}:{this.state.noeud.port} </p>
-                    <QRCode value={kp}/>
+                    <QRCode value={clePublique}/>
                     <hr className="my-4" />
 
                     <h4>Noeuds connectés</h4>
@@ -69,10 +64,10 @@ class NoeudsCmp extends Component {
                         { this.state.moeudsConnectes.map(noeud => {
                             return (
                                 <li key={noeud.noeudId}>
-                                    <span className="portefeuille-list-adress">{noeud.noeudId} </span><br/>
+                                    <span className="portefeuille-list-adress">{noeud.identifiant} </span><br/>
                                     <span className="portefeuille-list-adress">{noeud.hote}:{noeud.port}</span><br/>
-                                    <span className="portefeuille-list-adress">Adresse portefeuille:</span><span className="">{noeud.portefeuille.adresse}</span><br/>
-                                    <span className="portefeuille-list-adress">Clé publique:</span><span className="">{noeud.portefeuille.clePublique}</span>
+                                    <span className="portefeuille-list-adress">Adresse portefeuille:</span><span className="">{noeud.adressePortefeuille}</span><br/>
+                                    <span className="portefeuille-list-adress">Clé publique:</span><span className="">{noeud.clePubliquePortefeuille}</span>
                                 </li>
                             )
                         })}

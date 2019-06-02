@@ -1,11 +1,6 @@
 package ch.sebooom.blockchain.domain.noeuds;
 
-import ch.sebooom.blockchain.application.blockchain.web.api.resources.PortefeuilleRessource;
 import lombok.EqualsAndHashCode;
-
-import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Représente un noeud distant référencé dans l'aplication
@@ -13,25 +8,28 @@ import java.util.List;
 @EqualsAndHashCode(of = "identifiant")
 public class NoeudDistant {
 
-    /* Identifiant unique du noeud sur le réseau */
+    /* Informations du noeud  */
     private String identifiant;
-    /* hôte du noeud */
     private String hote;
-    /* port du noeud */
     private int port;
-    /* Liste des noeuds distants connectés */
-    public List<NoeudDistant> noeudsConnectes = new ArrayList<>();
-    /* Le prortefuille lié au noeud */
-    public PorteFeuille porteFeuille;
+    /* information du portefeuille lié */
+    private String clePubliquePortefuille;
+    private String adressePortefeuille;
+    private String descriptionPortefeuille;
 
 
-    public static NoeudDistant from(String identifiant, int port, PortefeuilleRessource portefeuille){
+    public static NoeudDistant from(String identifiant, String hote, int port,
+            String clePubliquePortefuille, String adressePortefeuille, String descriptionPortefeuille){
+
         NoeudDistant noeudDistant = new NoeudDistant();
         noeudDistant.identifiant = identifiant;
         noeudDistant.port = port;
-        noeudDistant.hote = "localhost";
+        noeudDistant.hote = hote;
 
-        noeudDistant.porteFeuille = PorteFeuille.creerPortefeuilleDistant(portefeuille.getClePublique(),portefeuille.getAdresse());
+        noeudDistant.clePubliquePortefuille = clePubliquePortefuille;
+        noeudDistant.adressePortefeuille = adressePortefeuille;
+        noeudDistant.descriptionPortefeuille = descriptionPortefeuille;
+
         return noeudDistant;
     }
 
@@ -45,6 +43,18 @@ public class NoeudDistant {
 
     public int port() {
         return this.port;
+    }
+
+    public String clePubliquePortefuille () {
+        return  this.clePubliquePortefuille;
+    }
+
+    public String adressePortefeuille () {
+        return this.adressePortefeuille;
+    }
+
+    public  String descriptionPortefeuille () {
+        return  this.descriptionPortefeuille;
     }
 
     

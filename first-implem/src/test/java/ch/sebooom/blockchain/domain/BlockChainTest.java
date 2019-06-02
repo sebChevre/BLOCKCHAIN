@@ -233,7 +233,7 @@ public class BlockChainTest {
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));
         LOGGER.info("\nWalletA is Attempting to send funds (40) to WalletB...");
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 40f),block1);
-        //block1.addTransaction(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 40f));
+        //block1.addTransaction(portefeuilleDomaineService.sendFunds(walletA,walletB.clePubliquePortefuille, 40f));
         bc.addBlock(block1);
         LOGGER.info("Block1 added block added: " + blockChainAsJson(bc));
 
@@ -242,7 +242,7 @@ public class BlockChainTest {
 
         Block block2 = new Block(block1.hash,2);
         LOGGER.info("\nWalletA Attempting to send more funds (1000) than it has...");
-        //block2.addTransaction(walletA.sendFunds(walletA,walletB.clePublique, 1000f));
+        //block2.addTransaction(walletA.sendFunds(walletA,walletB.clePubliquePortefuille, 1000f));
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletA,walletB.clePublique, 1000f),block2);
 
         bc.addBlock(block2);
@@ -254,7 +254,7 @@ public class BlockChainTest {
 
         Block block3 = new Block(block2.hash,3);
         LOGGER.info("\nWalletB is Attempting to send funds (20) to WalletA...");
-        //block3.addTransaction(walletB.sendFunds( walletA.clePublique, 20));
+        //block3.addTransaction(walletB.sendFunds( walletA.clePubliquePortefuille, 20));
         blockDomaineService.addTransactionToBlock(portefeuilleDomaineService.sendFunds(walletB,walletA.clePublique, 20),block3);
 
         LOGGER.info("\nWalletA's balance is: " + portefeuilleDomaineService.getBalanceForPortefeuille(walletA));

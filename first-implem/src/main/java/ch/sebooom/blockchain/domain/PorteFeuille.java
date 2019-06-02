@@ -42,7 +42,7 @@ public class PorteFeuille {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: BlockChain.UTXOs.entrySet()){
             TransactionOutput UTXO = item.getValue();
-            if(UTXO.isMine(clePublique)) { //if output belongs to me ( if coins belong to me )
+            if(UTXO.isMine(clePubliquePortefuille)) { //if output belongs to me ( if coins belong to me )
                 UTXOs.put(UTXO.id,UTXO); //add it to our list of unspent transactions.
                 total += UTXO.value ;
             }
@@ -68,7 +68,7 @@ public class PorteFeuille {
             if(total > value) break;
         }
 
-        Transaction newTransaction = new Transaction(clePublique, _recipient , value, inputs);
+        Transaction newTransaction = new Transaction(clePubliquePortefuille, _recipient , value, inputs);
         newTransaction.generateSignature(clePrive);
 
         for(TransactionInput input: inputs){
