@@ -1,17 +1,16 @@
 package ch.sebooom.blockchain.application.blockchain.web.api;
 
+import ch.sebooom.blockchain.application.blockchain.web.api.resources.PortefeuilleDistantRessource;
 import ch.sebooom.blockchain.application.blockchain.web.api.resources.PortefeuilleRessource;
 import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.noeuds.PortefeuilleDistant;
 import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by seb on .
@@ -19,7 +18,7 @@ import java.util.Map;
  * ${VERSION}
  */
 @RestController
-@RequestMapping("/portefeuilles")
+@RequestMapping("/portefeuille")
 public class PortefeuilleController {
 
 
@@ -27,36 +26,23 @@ public class PortefeuilleController {
     PortefeuilleDomaineService portefeuilleDomaineService;
 
     @GetMapping
-    public ResponseEntity<List<PortefeuilleRessource>> getAllPortefeuille(){
+    public ResponseEntity<PortefeuilleRessource> getPortefeuille(){
 
+        PorteFeuille portefeuille = portefeuilleDomaineService.getPortFeuilleWithBalance();
 
-        List<PortefeuilleRessource> portefeuilleRessourceList = new ArrayList<>();
-        Map<PorteFeuille,Float> portefeuilWithBalance = portefeuilleDomaineService.getAllPortFeuilleWithBalance();
+        PortefeuilleRessource portefeuilleRessource = new PortefeuilleRessource(portefeuille);
 
-        portefeuilWithBalance.keySet().forEach(porteFeuille -> {
-
-            float balance = portefeuilWithBalance.get(porteFeuille);
-            portefeuilleRessourceList.add(new PortefeuilleRessource(porteFeuille,balance));
-        });
-
-        return ResponseEntity.ok(portefeuilleRessourceList);
+        return ResponseEntity.ok(portefeuilleRessource);
     }
 
     @GetMapping("/{adresse}")
-    public ResponseEntity<PortefeuilleRessource> getPortefeuilleByAdresse(@PathVariable("adresse") String adresse){
+    public ResponseEntity<PortefeuilleDistantRessource> getPortefeuilleByAdresse(@PathVariable("adresse") String adresse){
 
-        ImmutablePair<PorteFeuille,Float> porteFeuilleByAdresse = portefeuilleDomaineService.getPortefeuilleByAdresse(adresse);
+        PortefeuilleDistant porteFeuille = portefeuilleDomaineService.getPortefeuilleDistantByAdresse(adresse);
 
-        return ResponseEntity.ok(new PortefeuilleRessource(porteFeuilleByAdresse.left,porteFeuilleByAdresse.right));
+        return ResponseEntity.ok(new PortefeuilleDistantRessource(porteFeuille));
 
     }
 
-    @PostMapping
-    public ResponseEntity<PortefeuilleRessource> createPortefeuille () {
 
-        PorteFeuille porteFeuille = portefeuilleDomaineService.createPortefeuille("POST REQUEST");
-        float balance = portefeuilleDomaineService.getBalanceForPortefeuille(porteFeuille);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new PortefeuilleRessource(porteFeuille,balance));
-    }
 }

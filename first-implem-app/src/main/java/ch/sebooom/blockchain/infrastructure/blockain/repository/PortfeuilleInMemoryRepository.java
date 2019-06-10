@@ -1,12 +1,12 @@
 package ch.sebooom.blockchain.infrastructure.blockain.repository;
 
 import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.noeuds.PortefeuilleDistant;
 import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
 import ch.sebooom.blockchain.infrastructure.momorydb.InMemoryDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,22 +23,21 @@ public class PortfeuilleInMemoryRepository implements PortefeuilleRepository {
 
 
     @Override
-    public List<PorteFeuille> getAllPortefeuille() {
-        return inMemoryDataSource.getAllPortefeuille();
+    public PorteFeuille getPortefeuille() {
+        return inMemoryDataSource.getPortefeuille();
     }
 
     @Override
-    public Optional<PorteFeuille> getPortefeuilleByAdresse (String adresse) {
+    public Optional<PortefeuilleDistant> getPortefeuilleDistantByAdresse (String adresse) {
 
-        Optional<PorteFeuille> porteFeuilleOptional = inMemoryDataSource.getAllPortefeuille().stream().filter(porteFeuille -> {
-            return porteFeuille.adresse.equals(adresse);
+        Optional<PortefeuilleDistant> porteFeuilleOptional = inMemoryDataSource.getNoeud().noeudsConnectes().stream().filter(noeud -> {
+            return noeud.adressePortefeuille().equals(adresse);
+        }).map(n -> {
+            return PortefeuilleDistant.from(n.clePubliquePortefuille(),n.adressePortefeuille(),n.descriptionPortefeuille());
         }).findFirst();
 
         return porteFeuilleOptional;
     }
 
-    @Override
-    public void savePortefeuille(PorteFeuille porteFeuille) {
-        inMemoryDataSource.addPortefeuille(porteFeuille);
-    }
+
 }

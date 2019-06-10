@@ -17,6 +17,8 @@ import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
@@ -32,6 +34,8 @@ public class ApplicationEventListener {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationEventListener.class.getName());
 
+    @Value("${solde.initial}")
+    private String soldeInitial;
 
     @Autowired
     NoeudDomaineService noeudDomaineService;
@@ -45,9 +49,14 @@ public class ApplicationEventListener {
     List<String> portsToScan;
     @Autowired
     ObjectMapper mapper;
+    @Autowired
+    ApplicationArguments applicationArguments;
 
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationready(){
+
+        LOGGER.info("****");
+        LOGGER.info("Solde initial:" + soldeInitial);
 
         finaliserConfigurationNoeud();
 
@@ -101,13 +110,13 @@ public class ApplicationEventListener {
 
         LOGGER.info("> Creating portefeuille-base....");
         PorteFeuille portefeuilleBase = PorteFeuille.creerPortefeuilleBase();
-        portefeuilleDomaineService.savePortefeuille(portefeuilleBase);
+        //portefeuilleDomaineService.savePortefeuille(portefeuilleBase);
         LOGGER.info("> Portefeuille portefeuille-base créé *****");
         LOGGER.info("> Clé publique, {}", CryptoUtil.getStringFromKey(portefeuilleBase.clePublique));
 
         LOGGER.info("> Creating premier portefeuille....");
         PorteFeuille premierPortefeuille = PorteFeuille.creerPortefeuille("Portefeuille pour noeud: " + noeud.identifiant());
-        portefeuilleDomaineService.savePortefeuille(premierPortefeuille);
+        //portefeuilleDomaineService.savePortefeuille(premierPortefeuille);
         LOGGER.info("> Portefeuille premier-portefeuille créé *****");
         LOGGER.info("> Clé publique, {}", CryptoUtil.getStringFromKey(premierPortefeuille.clePublique));
 
@@ -141,6 +150,8 @@ public class ApplicationEventListener {
 
     //Connection REST sur le noeud client
     private void connectToNoeudsConnecteEndpoint (String nodePort, OkHttpClient client) {
+
+
 
         String url = String.format(URL_BASE,nodePort);
         Noeud noeud = noeudDomaineService.getNoeud();

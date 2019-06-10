@@ -1,17 +1,20 @@
 package ch.sebooom.blockchain.domain.service;
 
+import ch.sebooom.blockchain.domain.exception.PortefeuilleNonExistantException;
 import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
+import ch.sebooom.blockchain.domain.noeuds.PortefeuilleDistant;
+import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
+import ch.sebooom.blockchain.domain.repository.NoeudRepository;
+import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
 import ch.sebooom.blockchain.domain.transaction.Transaction;
 import ch.sebooom.blockchain.domain.transaction.TransactionInput;
 import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
-import ch.sebooom.blockchain.domain.exception.PortefeuilleNonExistantException;
-import ch.sebooom.blockchain.domain.repository.BlockChainRepository;
-import ch.sebooom.blockchain.domain.repository.PortefeuilleRepository;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by seb on .
@@ -21,15 +24,14 @@ import java.util.*;
 @Service
 public class PortefeuilleDomaineService {
 
-
-
+    BlockChainRepository blockChainRepository;
+    NoeudRepository noeudRepository;
     PortefeuilleRepository portefeuilleRepository;
 
-    BlockChainRepository blockChainRepository;
-
-    public PortefeuilleDomaineService(PortefeuilleRepository portefeuilleRepository, BlockChainRepository blockChainRepository ){
-        this.portefeuilleRepository = portefeuilleRepository;
+    public PortefeuilleDomaineService(NoeudRepository noeudRepository, BlockChainRepository blockChainRepository, PortefeuilleRepository portefeuilleRepository ){
+        this.noeudRepository = noeudRepository;
         this.blockChainRepository = blockChainRepository;
+        this.portefeuilleRepository = portefeuilleRepository;
     }
 
 
@@ -76,43 +78,24 @@ public class PortefeuilleDomaineService {
     }
 
 
-    public Map<PorteFeuille,Float> getAllPortFeuilleWithBalance(){
+    public PorteFeuille getPortFeuilleWithBalance(){
 
-        Map<PorteFeuille,Float> portefeuilleWithBalance = new HashMap<>();
+        PorteFeuille porteFeuille = noeudRepository.getNoeud().porteFeuille();
 
-        List<PorteFeuille> porteFeuilleList = portefeuilleRepository.getAllPortefeuille();;
+        porteFeuille.balance(getBalanceForPortefeuille(porteFeuille));
 
-        porteFeuilleList.forEach(porteFeuille -> {
-            portefeuilleWithBalance.put(porteFeuille,getBalanceForPortefeuille(porteFeuille));
-        });
-        return portefeuilleWithBalance;
+        return porteFeuille;
 
     }
 
 
-    public PorteFeuille createPortefeuille(String description) {
-        PorteFeuille newPortefeuille = PorteFeuille.creerPortefeuille(description);
-        portefeuilleRepository.savePortefeuille(newPortefeuille);
-        return newPortefeuille;
+    public PortefeuilleDistant getPortefeuilleDistantByAdresse(String adresse){
 
-    }
-
-
-    public ImmutablePair<PorteFeuille, Float> getPortefeuilleByAdresse(String adresse){
-
-        PorteFeuille porteFeuille = portefeuilleRepository.getPortefeuilleByAdresse(adresse).orElseThrow(() ->
+        PortefeuilleDistant porteFeuille = portefeuilleRepository.getPortefeuilleDistantByAdresse(adresse).orElseThrow(() ->
                 new PortefeuilleNonExistantException(adresse)
         );
 
-        float balance = getBalanceForPortefeuille(porteFeuille);
-
-        ImmutablePair<PorteFeuille,Float> portefeuilleWithBalance = new ImmutablePair<>(porteFeuille,balance);
-
-        return portefeuilleWithBalance;
+        return porteFeuille;
     }
 
-
-    public void savePortefeuille(PorteFeuille portefeuille){
-        portefeuilleRepository.savePortefeuille(portefeuille);
-    }
 }

@@ -66,7 +66,7 @@ public final class Noeud {
         return noeudsConnectes;
     }
 
-    public void creerPortefeuille(PorteFeuille premierPortefeuille) {
+    public void definirPortefeuille(PorteFeuille premierPortefeuille) {
         this.porteFeuille = premierPortefeuille;
     }
 }

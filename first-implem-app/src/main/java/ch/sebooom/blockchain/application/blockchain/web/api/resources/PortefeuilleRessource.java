@@ -20,10 +20,10 @@ public class PortefeuilleRessource {
 
     public PortefeuilleRessource () {}
 
-    public PortefeuilleRessource(PorteFeuille porteFeuille, float balance) {
+    public PortefeuilleRessource(PorteFeuille porteFeuille) {
 
         this.adresse = porteFeuille.adresse;
-        this.balance = balance;
+        this.balance = porteFeuille.balance();
         this.clePublique = CryptoUtil.getStringFromKey(porteFeuille.clePublique);
         this.isBasePortefeuille = porteFeuille.isBasePortefeuille;
         this.description =  porteFeuille.description;

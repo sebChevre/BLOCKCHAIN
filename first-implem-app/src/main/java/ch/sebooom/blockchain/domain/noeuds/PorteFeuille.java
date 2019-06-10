@@ -1,6 +1,5 @@
 package ch.sebooom.blockchain.domain.noeuds;
 
-import ch.sebooom.blockchain.domain.service.PortefeuilleDomaineService;
 import ch.sebooom.blockchain.domain.transaction.TransactionOutput;
 import ch.sebooom.blockchain.domain.util.CryptoUtil;
 
@@ -20,7 +19,15 @@ public class PorteFeuille {
     public boolean isDistant = Boolean.FALSE;
     public boolean isBasePortefeuille = Boolean.FALSE;
     public String description;
+    private float balance;
 
+    public float balance () {
+        return balance;
+    }
+
+    public void balance(float balance){
+        this.balance  = balance;
+    }
 
     public Map<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 

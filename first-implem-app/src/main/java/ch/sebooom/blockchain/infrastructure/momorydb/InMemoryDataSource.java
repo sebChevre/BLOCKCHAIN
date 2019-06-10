@@ -1,11 +1,9 @@
 package ch.sebooom.blockchain.infrastructure.momorydb;
 
 import ch.sebooom.blockchain.domain.blockchain.BlockChain;
+import ch.sebooom.blockchain.domain.noeuds.Noeud;
 import ch.sebooom.blockchain.domain.noeuds.PorteFeuille;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by seb on .
@@ -15,19 +13,26 @@ import java.util.List;
 @Component
 public class InMemoryDataSource {
 
+    /* etat local de la chain */
     private  BlockChain blockChain = new BlockChain();
-    private  List<PorteFeuille> portefeuilles = new ArrayList<>();
+    /* le noeud */
+    private Noeud noeud;
 
-    public  void addPortefeuille(PorteFeuille porteFeuille){
-        portefeuilles.add(porteFeuille);
-    }
 
     public  BlockChain getBlockChain(){
         return blockChain;
     }
 
-    public  List<PorteFeuille> getAllPortefeuille(){
-        return portefeuilles;
+    public  PorteFeuille getPortefeuille(){
+        return noeud.porteFeuille();
+    }
+
+    public Noeud getNoeud () {
+        return noeud;
+    }
+
+    public void setNoeud(Noeud noeud){
+        this.noeud = noeud;
     }
 
 

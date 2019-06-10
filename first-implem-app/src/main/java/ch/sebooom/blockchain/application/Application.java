@@ -3,14 +3,12 @@ package ch.sebooom.blockchain.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.annotation.PostConstruct;
 import java.security.Security;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +22,8 @@ import java.util.List;
 @ComponentScan(basePackages = "ch.sebooom.blockchain")
 @EnableScheduling
 public class Application {
+
+
 
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
@@ -40,7 +40,14 @@ public class Application {
     public  static void main(String args[]) {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); //Setup Bouncey castle as a Security Provider
 
-         SpringApplication.run(Application.class);
+//        String soldeInitial = args[0].split(":")[1];
+      //  LOGGER.info("Initial solde set: " + soldeInitial);
+        for(String arg:args) {
+            System.out.println(arg);
+        }
+
+
+        SpringApplication.run(Application.class, args);
     }
 
 }
